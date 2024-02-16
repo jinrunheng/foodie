@@ -21,3 +21,8 @@ mybatis:
 
 server:
   port: 8088
+
+mapper:
+  mappers: com.github.my.mapper.MyMapper
+  not-empty: false
+  identity: MYSQL
