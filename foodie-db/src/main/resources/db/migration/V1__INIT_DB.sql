@@ -36,8 +36,8 @@ CREATE TABLE `foodie_db`.`category`
 ) COMMENT = '商品分类 ';
 
 -- 创建用户数据表
-DROP TABLE IF EXISTS `foodie_db`.`users`;
-CREATE TABLE `foodie_db`.`users`
+DROP TABLE IF EXISTS `foodie_db`.`foodie_users`;
+CREATE TABLE `foodie_db`.`foodie_users`
 (
     id           VARCHAR(64)   NOT NULL COMMENT '主键id 用户id',
     username     VARCHAR(32)   NOT NULL COMMENT '用户名 用户名',
