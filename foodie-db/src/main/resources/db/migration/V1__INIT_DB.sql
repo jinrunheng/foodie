@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS foodie_db;
 CREATE DATABASE IF NOT EXISTS foodie_db;
 
 -- 创建轮播图数据表
@@ -36,8 +37,8 @@ CREATE TABLE `foodie_db`.`category`
 ) COMMENT = '商品分类 ';
 
 -- 创建用户数据表
-DROP TABLE IF EXISTS `foodie_db`.`foodie_users`;
-CREATE TABLE `foodie_db`.`foodie_users`
+DROP TABLE IF EXISTS `foodie_db`.`foodie_user`;
+CREATE TABLE `foodie_db`.`foodie_user`
 (
     id           VARCHAR(64)   NOT NULL COMMENT '主键id 用户id',
     username     VARCHAR(32)   NOT NULL COMMENT '用户名 用户名',
@@ -74,8 +75,8 @@ CREATE TABLE `foodie_db`.`user_address`
 ) COMMENT = '用户地址表 ';
 
 -- 创建商品表
-DROP TABLE IF EXISTS `foodie_db`.`items`;
-CREATE TABLE `foodie_db`.`items`
+DROP TABLE IF EXISTS `foodie_db`.`item`;
+CREATE TABLE `foodie_db`.`item`
 (
     id            VARCHAR(64) NOT NULL COMMENT '商品主键id',
     item_name     VARCHAR(32) NOT NULL COMMENT '商品名称 商品名称',
@@ -90,8 +91,8 @@ CREATE TABLE `foodie_db`.`items`
 ) COMMENT = '商品表 商品信息相关表：分类表，商品图片表，商品规格表，商品参数表';
 
 -- 创建商品图片表
-DROP TABLE IF EXISTS `foodie_db`.`items_img`;
-CREATE TABLE `foodie_db`.`items_img`
+DROP TABLE IF EXISTS `foodie_db`.`item_img`;
+CREATE TABLE `foodie_db`.`item_img`
 (
     id           VARCHAR(64)  NOT NULL COMMENT '图片主键',
     item_id      VARCHAR(64)  NOT NULL COMMENT '商品外键id 商品外键id',
@@ -104,8 +105,8 @@ CREATE TABLE `foodie_db`.`items_img`
 ) COMMENT = '商品图片 ';
 
 -- 创建商品规格表
-DROP TABLE IF EXISTS `foodie_db`.`items_spec`;
-CREATE TABLE `foodie_db`.`items_spec`
+DROP TABLE IF EXISTS `foodie_db`.`item_spec`;
+CREATE TABLE `foodie_db`.`item_spec`
 (
     id             VARCHAR(64)   NOT NULL COMMENT '商品规格id',
     item_id        VARCHAR(64)   NOT NULL COMMENT '商品外键id',
@@ -120,8 +121,8 @@ CREATE TABLE `foodie_db`.`items_spec`
 ) COMMENT = '商品规格 每一件商品都有不同的规格，不同的规格又有不同的价格和优惠力度，规格表为此设计';
 
 -- 创建商品参数表
-DROP TABLE IF EXISTS `foodie_db`.`items_param`;
-CREATE TABLE `foodie_db`.`items_param`
+DROP TABLE IF EXISTS `foodie_db`.`item_param`;
+CREATE TABLE `foodie_db`.`item_param`
 (
     id               VARCHAR(64) NOT NULL COMMENT '商品参数id',
     item_id          VARCHAR(32) NOT NULL COMMENT '商品外键id',
@@ -140,8 +141,8 @@ CREATE TABLE `foodie_db`.`items_param`
 ) COMMENT = '商品参数 ';
 
 -- 创建商品评价表
-DROP TABLE IF EXISTS `foodie_db`.`items_comments`;
-CREATE TABLE `foodie_db`.`items_comments`
+DROP TABLE IF EXISTS `foodie_db`.`item_comment`;
+CREATE TABLE `foodie_db`.`item_comment`
 (
     id            VARCHAR(64)  NOT NULL COMMENT 'id主键',
     user_id       VARCHAR(64) COMMENT '用户id 用户名须脱敏',
@@ -157,8 +158,8 @@ CREATE TABLE `foodie_db`.`items_comments`
 ) COMMENT = '商品评价表 ';
 
 -- 创建订单表
-DROP TABLE IF EXISTS `foodie_db`.`orders`;
-CREATE TABLE `foodie_db`.`orders`
+DROP TABLE IF EXISTS `foodie_db`.`order`;
+CREATE TABLE `foodie_db`.`order`
 (
     id               VARCHAR(64)  NOT NULL COMMENT '订单主键 同时也是订单编号',
     user_id          VARCHAR(64)  NOT NULL COMMENT '用户id',
@@ -179,8 +180,8 @@ CREATE TABLE `foodie_db`.`orders`
 ) COMMENT = '订单表 ';
 
 -- 创建订单商品关联表
-DROP TABLE IF EXISTS `foodie_db`.`order_items`;
-CREATE TABLE `foodie_db`.`order_items`
+DROP TABLE IF EXISTS `foodie_db`.`order_item`;
+CREATE TABLE `foodie_db`.`order_item`
 (
     id             VARCHAR(64)  NOT NULL COMMENT '主键id',
     order_id       VARCHAR(64)  NOT NULL COMMENT '归属订单id',
