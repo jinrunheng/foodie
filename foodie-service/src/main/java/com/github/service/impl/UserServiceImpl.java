@@ -1,11 +1,12 @@
 package com.github.service.impl;
 
-import com.github.mapper.FoodieUsersMapper;
-import com.github.pojo.FoodieUsers;
+import com.github.mapper.FoodieUserMapper;
+import com.github.pojo.FoodieUser;
 import com.github.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
 
 /**
  * @Author Dooby Kim
@@ -15,15 +16,16 @@ import tk.mybatis.mapper.entity.Example;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private FoodieUsersMapper usersMapper;
+    @Resource
+    private FoodieUserMapper userMapper;
 
     @Override
-    public boolean queryUserNameExist(String username) {
-        Example userExample = new Example(FoodieUsers.class);
+    public boolean queryUserNameIsExist(String username) {
+
+        Example userExample = new Example(FoodieUser.class);
         final Example.Criteria criteria = userExample.createCriteria();
         criteria.andEqualTo("username", username);
-        final FoodieUsers foodieUser = usersMapper.selectOneByExample(userExample);
+        final FoodieUser foodieUser = userMapper.selectOneByExample(userExample);
         return foodieUser != null;
     }
 }

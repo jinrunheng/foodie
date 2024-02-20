@@ -21,14 +21,14 @@ public class PassportController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/usernameExist")
-    public int queryUsernameExist(@RequestParam String username) {
+    @GetMapping("/usernameIsExist")
+    public int queryUsernameIsExist(@RequestParam String username) {
         // 判断用户名是否为空
         if (StringUtils.isBlank(username)) {
             return 500; // 错误码
         }
 
-        final boolean exist = userService.queryUserNameExist(username);
+        final boolean exist = userService.queryUserNameIsExist(username);
         if (exist) {
             return 500;
         }

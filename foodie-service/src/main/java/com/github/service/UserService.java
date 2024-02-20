@@ -12,5 +12,5 @@ public interface UserService {
      *
      * @return
      */
-    boolean queryUserNameExist(String username);
+    boolean queryUserNameIsExist(String username);
 }
