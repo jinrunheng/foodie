@@ -1,8 +1,10 @@
 package com.github.controller;
 
 import com.github.service.UserService;
+import com.github.utils.CustomJSONResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,18 +24,18 @@ public class PassportController {
     private UserService userService;
 
     @GetMapping("/usernameIsExist")
-    public int queryUsernameIsExist(@RequestParam String username) {
+    public CustomJSONResult queryUsernameIsExist(@RequestParam String username) {
         // 判断用户名是否为空
         if (StringUtils.isBlank(username)) {
-            return 500; // 错误码
+            return CustomJSONResult.errorMsg("用户名不能为空");
         }
 
         final boolean exist = userService.queryUserNameIsExist(username);
         if (exist) {
-            return 500;
+            return CustomJSONResult.errorMsg("用户名已存在");
         }
 
         // 请求成功
-        return 200;
+        return CustomJSONResult.ok();
     }
 }
