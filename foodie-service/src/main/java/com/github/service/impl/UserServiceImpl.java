@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         }
         // 默认用户昵称同用户名
         foodieUser.setNickname(foodieUserBO.getUsername());
-        foodieUser.setFace(null); // 默认头像为空
+        foodieUser.setFace("test"); // 默认头像为，给定一个假值
         try {
             // 默认生日
             foodieUser.setBirthday(DateUtils.parseDate("1900-01-01", "yyyy-MM-dd"));
