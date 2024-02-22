@@ -4,6 +4,8 @@ import com.github.bo.FoodieUserBO;
 import com.github.pojo.FoodieUser;
 import com.github.service.UserService;
 import com.github.utils.CustomJSONResult;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.Objects;
  * @Version 1.0
  * 用于登陆验证
  */
+@Api(tags = {"用于登陆/注册的相关接口"})
 @RestController
 @RequestMapping("passport")
 public class PassportController {
@@ -23,6 +26,7 @@ public class PassportController {
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "验证用户名是否存在接口")
     @GetMapping("/usernameIsExist")
     public CustomJSONResult queryUsernameIsExist(@RequestParam String username) {
         // 判断用户名是否为空
@@ -35,6 +39,7 @@ public class PassportController {
         return CustomJSONResult.ok();
     }
 
+    @ApiOperation(value = "用户注册接口")
     @PostMapping("/regist")
     public CustomJSONResult regist(@RequestBody FoodieUserBO userBO) {
         final String username = userBO.getUsername();
