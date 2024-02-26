@@ -25,4 +25,12 @@ public interface UserService {
      */
     FoodieUser createUser(FoodieUserBO foodieUserBO);
 
+    /**
+     * 查询用户是否存在
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    FoodieUser queryUserForLogin(String username, String password);
 }

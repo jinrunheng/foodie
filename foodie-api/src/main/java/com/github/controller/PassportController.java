@@ -4,6 +4,7 @@ import com.github.bo.FoodieUserBO;
 import com.github.pojo.FoodieUser;
 import com.github.service.UserService;
 import com.github.utils.CustomJSONResult;
+import com.github.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +63,26 @@ public class PassportController {
 
         final FoodieUser user = userService.createUser(userBO);
         return CustomJSONResult.ok(user);
+    }
+
+    @ApiOperation(value = "用户登陆接口")
+    @PostMapping("/login")
+    public CustomJSONResult login(@RequestBody FoodieUserBO userBO) {
+        String username = userBO.getUsername();
+        String password = userBO.getPassword();
+        // 1. 判断用户名与密码必须不为空
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
+            return CustomJSONResult.errorMsg("用户名或密码不能为空!");
+        }
+        String md5Password = null;
+        try {
+            md5Password = MD5Utils.getMD5Str(password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 2. 查询用户是否存在，如果不存在，返回用户名或密码不正确提示信息
+        final FoodieUser foodieUser = userService.queryUserForLogin(username, md5Password);
+        return Objects.isNull(foodieUser) ? CustomJSONResult.errorMsg("用户名或密码不正确!") : CustomJSONResult.ok(foodieUser);
     }
 
     /**
