@@ -68,4 +68,13 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(foodieUser);
         return foodieUser;
     }
+
+    @Override
+    public FoodieUser queryUserForLogin(String username, String password) {
+        Example userExample = new Example(FoodieUser.class);
+        final Example.Criteria criteria = userExample.createCriteria();
+        criteria.andEqualTo("username", username);
+        criteria.andEqualTo("password", password);
+        return userMapper.selectOneByExample(userExample);
+    }
 }
