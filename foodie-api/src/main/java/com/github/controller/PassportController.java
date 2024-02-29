@@ -32,6 +32,8 @@ import java.util.UUID;
 @RequestMapping("passport")
 public class PassportController {
 
+    private static final String COOKIE_NAME = "user";
+
     @Autowired
     private UserService userService;
 
@@ -97,8 +99,18 @@ public class PassportController {
         BeanUtils.copyProperties(foodieUser, foodieUserDTO);
         // 3. 设置 Cookie
         final String cookie = JsonUtils.objectToJson(foodieUserDTO);
-        CookieUtils.setCookie(request, response, "user", cookie);
+        CookieUtils.setCookie(request, response, COOKIE_NAME, cookie);
         return CustomJSONResult.ok(foodieUserDTO);
+    }
+
+    @ApiOperation(value = "用户退出登陆接口")
+    @PostMapping("/logout")
+    public CustomJSONResult logout(@RequestParam String userId, HttpServletRequest request, HttpServletResponse response) {
+        // 清除用户 Cookie
+        CookieUtils.deleteCookie(request, response, COOKIE_NAME);
+        // TODO 1. 用户退出登陆，需要清空购物车
+        // TODO 2. 分布式会话中需要清除用户数据
+        return CustomJSONResult.ok();
     }
 
     /**
