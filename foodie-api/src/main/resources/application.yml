@@ -18,7 +18,9 @@ spring:
 mybatis:
   type-aliases-package: com.github.pojo
   mapper-locations: classpath:mapper/*.xml
-
+  # mybatis 开启日志
+  # configuration:
+  ##  log-impl:
 server:
   port: 8088
 
