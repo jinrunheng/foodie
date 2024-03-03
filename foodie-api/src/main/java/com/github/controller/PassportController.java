@@ -1,6 +1,5 @@
 package com.github.controller;
 
-import cn.hutool.json.JSONUtil;
 import com.github.bo.FoodieUserBO;
 import com.github.dto.FoodieUserDTO;
 import com.github.pojo.FoodieUser;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * @Author Dooby Kim
