@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS foodie_db;
-CREATE DATABASE IF NOT EXISTS foodie_db;
+CREATE DATABASE IF NOT EXISTS foodie_db CHARACTER SET utf8 COLLATE utf8_general_ci;;
 
 -- 创建轮播图数据表
 DROP TABLE IF EXISTS `foodie_db`.`carousel`;
@@ -31,7 +31,7 @@ CREATE TABLE `foodie_db`.`category`
     father_id INT         NOT NULL COMMENT '父id 父id 上一级依赖的id，1级分类则为0，二级三级分别依赖上一级',
     logo      VARCHAR(64) COMMENT '图标 logo',
     slogan    VARCHAR(64) COMMENT '口号',
-    cat_image VARCHAR(64) COMMENT '分类图',
+    cat_image VARCHAR(128) COMMENT '分类图',
     bg_color  VARCHAR(32) COMMENT '背景颜色',
     PRIMARY KEY (id)
 ) COMMENT = '商品分类 ';
