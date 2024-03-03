@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+### 忽略特定的文件
+/foodie-db/src/main/resources/db/migration/V2__INSERT_DB.sql
