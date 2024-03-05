@@ -6,14 +6,18 @@ import com.github.pojo.Category;
 import com.github.service.CarouselService;
 import com.github.service.CategoryService;
 import com.github.utils.CustomJSONResult;
+import com.github.vo.CategoryVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author Dooby Kim
@@ -49,5 +53,19 @@ public class IndexController {
     public CustomJSONResult cats() {
         final List<Category> categories = categoryService.queryAllRootLevelCat();
         return CustomJSONResult.ok(categories);
+    }
+
+    @GetMapping("/subCat/{rootCatId}")
+    @ApiOperation(value = "获取商品子分类")
+    public CustomJSONResult subCat(
+            @PathVariable
+            @ApiParam(name = "rootCatId", value = "一级分类 ID", required = true)
+                    Integer rootCatId) {
+
+        if (Objects.isNull(rootCatId)) {
+            return CustomJSONResult.errorMsg("一级分类 ID 为空！");
+        }
+        final List<CategoryVO> subCatList = categoryService.getSubCatList(rootCatId);
+        return CustomJSONResult.ok(subCatList);
     }
 }

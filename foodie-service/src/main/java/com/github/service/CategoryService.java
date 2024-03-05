@@ -1,6 +1,7 @@
 package com.github.service;
 
 import com.github.pojo.Category;
+import com.github.vo.CategoryVO;
 
 import java.util.List;
 
@@ -17,4 +18,12 @@ public interface CategoryService {
      * @return
      */
     List<Category> queryAllRootLevelCat();
+
+    /**
+     * 根据一级分类 ID 查询子分类信息
+     *
+     * @param rootCatId
+     * @return
+     */
+    List<CategoryVO> getSubCatList(Integer rootCatId);
 }

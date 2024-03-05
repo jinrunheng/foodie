@@ -9,4 +9,6 @@ finished step1,week2,1-3
 - 我们可以通过修改 conf 目录下的 server.xml 来自定义 tomcat 访问的端口号；浏览器访问 `localhost:[port]`，如果未修改，默认端口号为 `8080`
 - 页面地址：`http://localhost:8080/foodie-shop/index.html`
 - 关闭 tomcat：在 apache-tomcat 目录下的 bin 目录，运行：`./shutdown.sh`
-     
+
+## Swagger2 
+- `http://localhost:8088/doc.html`     
