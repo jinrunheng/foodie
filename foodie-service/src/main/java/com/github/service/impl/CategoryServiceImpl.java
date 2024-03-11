@@ -7,11 +7,14 @@ import com.github.mapper.CustomCategoryMapper;
 import com.github.pojo.Category;
 import com.github.service.CategoryService;
 import com.github.vo.CategoryVO;
+import com.github.vo.NewItemsVO;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Dooby Kim
@@ -43,5 +46,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryVO> getSubCatList(Integer rootCatId) {
         return customCategoryMapper.getSubCatList(rootCatId);
+    }
+
+    @Override
+    public List<NewItemsVO> getSixNewItems(Integer rootCatId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("rootCatId", rootCatId);
+        return customCategoryMapper.getSixNewItems(map);
     }
 }
