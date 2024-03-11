@@ -7,6 +7,7 @@ import com.github.service.CarouselService;
 import com.github.service.CategoryService;
 import com.github.utils.CustomJSONResult;
 import com.github.vo.CategoryVO;
+import com.github.vo.NewItemsVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -67,5 +68,18 @@ public class IndexController {
         }
         final List<CategoryVO> subCatList = categoryService.getSubCatList(rootCatId);
         return CustomJSONResult.ok(subCatList);
+    }
+
+    @GetMapping("/sixNewItems/{rootCatId}")
+    @ApiOperation(value = "查询每个一级分类下的最新 6 条商品数据")
+    public CustomJSONResult test(
+            @PathVariable
+            @ApiParam(name = "rootCatId", value = "一级分类 ID", required = true)
+                    Integer rootCatId) {
+        if (Objects.isNull(rootCatId)) {
+            return CustomJSONResult.errorMsg("一级分类 ID 为空！");
+        }
+        final List<NewItemsVO> sixNewItems = categoryService.getSixNewItems(rootCatId);
+        return CustomJSONResult.ok(sixNewItems);
     }
 }
