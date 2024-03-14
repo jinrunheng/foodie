@@ -4,6 +4,7 @@ import com.github.pojo.Item;
 import com.github.pojo.ItemImg;
 import com.github.pojo.ItemParam;
 import com.github.pojo.ItemSpec;
+import com.github.vo.CommentLevelCountsVO;
 
 import java.util.List;
 
@@ -45,4 +46,12 @@ public interface ItemService {
      * @return
      */
     ItemParam queryItemParam(String itemId);
+
+    /**
+     * 根据商品 ID 查询商品评价数量（总评价数，好评数，中评数，差评数）
+     *
+     * @param itemId
+     * @return
+     */
+    CommentLevelCountsVO queryCommentCounts(String itemId);
 }
