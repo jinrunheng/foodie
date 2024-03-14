@@ -6,15 +6,13 @@ import com.github.pojo.ItemParam;
 import com.github.pojo.ItemSpec;
 import com.github.service.ItemService;
 import com.github.utils.CustomJSONResult;
+import com.github.vo.CommentLevelCountsVO;
 import com.github.vo.ItemInfoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -53,5 +51,18 @@ public class ItemController {
         itemInfoVO.setItemSpecList(itemSpecs);
         itemInfoVO.setItemParams(itemParam);
         return CustomJSONResult.ok(itemInfoVO);
+    }
+
+    @GetMapping("/commentLevel")
+    @ApiOperation(value = "查询商品评价数量")
+    public CustomJSONResult commentCounts(
+            @ApiParam(name = "itemId", value = "商品 ID", required = true)
+            @RequestParam String itemId
+    ) {
+        if (StringUtils.isBlank(itemId)) {
+            return CustomJSONResult.errorMsg("商品 ID 不能为空!");
+        }
+        final CommentLevelCountsVO commentLevelCountsVO = itemService.queryCommentCounts(itemId);
+        return CustomJSONResult.ok(commentLevelCountsVO);
     }
 }

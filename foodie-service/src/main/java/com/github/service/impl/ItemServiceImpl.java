@@ -1,14 +1,10 @@
 package com.github.service.impl;
 
-import com.github.mapper.ItemImgMapper;
-import com.github.mapper.ItemMapper;
-import com.github.mapper.ItemParamMapper;
-import com.github.mapper.ItemSpecMapper;
-import com.github.pojo.Item;
-import com.github.pojo.ItemImg;
-import com.github.pojo.ItemParam;
-import com.github.pojo.ItemSpec;
+import com.github.enums.CommentLevel;
+import com.github.mapper.*;
+import com.github.pojo.*;
 import com.github.service.ItemService;
+import com.github.vo.CommentLevelCountsVO;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -34,6 +30,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Resource
     private ItemParamMapper itemParamMapper;
+
+    @Resource
+    private ItemCommentMapper itemCommentMapper;
 
 
     @Override
@@ -64,4 +63,37 @@ public class ItemServiceImpl implements ItemService {
         criteria.andEqualTo("itemId", itemId);
         return itemParamMapper.selectOneByExample(ItemParamExp);
     }
+
+    @Override
+    public CommentLevelCountsVO queryCommentCounts(String itemId) {
+        CommentLevelCountsVO commentLevelCountsVO = new CommentLevelCountsVO();
+
+        final Integer goodCounts = getCommentsCounts(itemId, CommentLevel.GOOD.type);
+        final Integer normalCounts = getCommentsCounts(itemId, CommentLevel.NORMAL.type);
+        final Integer badCounts = getCommentsCounts(itemId, CommentLevel.BAD.type);
+        final Integer commentsCounts = goodCounts + normalCounts + badCounts;
+        commentLevelCountsVO.setTotalCounts(commentsCounts);
+        commentLevelCountsVO.setGoodCounts(goodCounts);
+        commentLevelCountsVO.setNormalCounts(normalCounts);
+        commentLevelCountsVO.setBadCounts(badCounts);
+        return commentLevelCountsVO;
+    }
+
+    /**
+     * 根据商品 ID，等级（好，中，差）获取评价数量
+     *
+     * @param itemId
+     * @param level
+     * @return
+     */
+    private Integer getCommentsCounts(String itemId, Integer level) {
+        ItemComment condition = new ItemComment();
+        condition.setItemId(itemId);
+        if (level != null) {
+            condition.setCommentLevel(level);
+        }
+        return itemCommentMapper.selectCount(condition);
+    }
+
+
 }
