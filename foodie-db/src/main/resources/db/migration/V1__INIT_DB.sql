@@ -149,7 +149,7 @@ CREATE TABLE `foodie_db`.`item_comment`
     item_id       VARCHAR(64)  NOT NULL COMMENT '商品id',
     item_name     VARCHAR(64) COMMENT '商品名称',
     item_spec_id  VARCHAR(64) COMMENT '商品规格id 可为空',
-    sepc_name     VARCHAR(32) COMMENT '规格名称 可为空',
+    spec_name     VARCHAR(32) COMMENT '规格名称 可为空',
     comment_level INT          NOT NULL COMMENT '评价等级 1：好评 2：中评 3：差评',
     content       VARCHAR(128) NOT NULL COMMENT '评价内容',
     created_time  DATETIME COMMENT '创建时间',

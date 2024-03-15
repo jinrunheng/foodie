@@ -4,9 +4,11 @@ import com.github.pojo.Item;
 import com.github.pojo.ItemImg;
 import com.github.pojo.ItemParam;
 import com.github.pojo.ItemSpec;
+import com.github.utils.PagedGridResult;
 import com.github.vo.CommentLevelCountsVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Dooby Kim
@@ -54,4 +56,14 @@ public interface ItemService {
      * @return
      */
     CommentLevelCountsVO queryCommentCounts(String itemId);
+
+    /**
+     * 查询商品评论(分页)
+     *
+     * @param map      key:itemId,level
+     * @param page     分页，表示第几页
+     * @param pageSize 分页，每页多少条数据
+     * @return
+     */
+    PagedGridResult queryPagedComments(Map<String, Object> map, Integer page, Integer pageSize);
 }

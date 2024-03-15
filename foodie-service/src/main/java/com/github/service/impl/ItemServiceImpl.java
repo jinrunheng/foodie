@@ -2,14 +2,19 @@ package com.github.service.impl;
 
 import com.github.enums.CommentLevel;
 import com.github.mapper.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.github.pojo.*;
 import com.github.service.ItemService;
+import com.github.utils.PagedGridResult;
 import com.github.vo.CommentLevelCountsVO;
+import com.github.vo.ItemCommentVO;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Dooby Kim
@@ -33,6 +38,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Resource
     private ItemCommentMapper itemCommentMapper;
+
+    @Resource
+    private CustomItemMapper customItemMapper;
 
 
     @Override
@@ -79,6 +87,13 @@ public class ItemServiceImpl implements ItemService {
         return commentLevelCountsVO;
     }
 
+    @Override
+    public PagedGridResult queryPagedComments(Map<String, Object> map, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<ItemCommentVO> itemCommentVOList = customItemMapper.queryItemComments(map);
+        return setPagedGrid(itemCommentVOList, page);
+    }
+
     /**
      * 根据商品 ID，等级（好，中，差）获取评价数量
      *
@@ -93,6 +108,16 @@ public class ItemServiceImpl implements ItemService {
             condition.setCommentLevel(level);
         }
         return itemCommentMapper.selectCount(condition);
+    }
+
+    private PagedGridResult setPagedGrid(List<?> list, Integer page) {
+        PageInfo<?> pageList = new PageInfo<>(list);
+        PagedGridResult pagedGridResult = new PagedGridResult();
+        pagedGridResult.setPage(page);
+        pagedGridResult.setRows(list);
+        pagedGridResult.setTotal(pageList.getPages());
+        pagedGridResult.setRecords(pageList.getTotal());
+        return pagedGridResult;
     }
 
 

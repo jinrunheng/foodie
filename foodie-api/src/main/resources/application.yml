@@ -28,3 +28,7 @@ mapper:
   mappers: com.github.my.mapper.MyMapper
   not-empty: false
   identity: MYSQL
+# mybatis 分页
+pagehelper:
+  helperDialect: mysql
+  supportMethodsArguments: true
