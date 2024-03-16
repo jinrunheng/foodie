@@ -71,6 +71,7 @@ public class ItemController {
     }
 
     @GetMapping("/comments")
+    @ApiOperation(value = "查询商品评价")
     public CustomJSONResult comments(
             @ApiParam(name = "itemId", value = "商品 ID", required = true)
             @RequestParam String itemId,

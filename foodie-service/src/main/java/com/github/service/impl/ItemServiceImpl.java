@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pojo.*;
 import com.github.service.ItemService;
+import com.github.utils.DesensitizationUtil;
 import com.github.utils.PagedGridResult;
 import com.github.vo.CommentLevelCountsVO;
 import com.github.vo.ItemCommentVO;
@@ -91,6 +92,9 @@ public class ItemServiceImpl implements ItemService {
     public PagedGridResult queryPagedComments(Map<String, Object> map, Integer page, Integer pageSize) {
         PageHelper.startPage(page, pageSize);
         List<ItemCommentVO> itemCommentVOList = customItemMapper.queryItemComments(map);
+        for (ItemCommentVO vo : itemCommentVOList) {
+            vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
+        }
         return setPagedGrid(itemCommentVOList, page);
     }
 
