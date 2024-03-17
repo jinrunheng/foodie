@@ -71,6 +71,7 @@ public class ItemController {
     }
 
     @GetMapping("/comments")
+    @ApiOperation(value = "查询商品评价")
     public CustomJSONResult comments(
             @ApiParam(name = "itemId", value = "商品 ID", required = true)
             @RequestParam String itemId,
@@ -95,6 +96,34 @@ public class ItemController {
         map.put("itemId", itemId);
         map.put("level", level);
         final PagedGridResult pagedGridResult = itemService.queryPagedComments(map, page, pageSize);
+        return CustomJSONResult.ok(pagedGridResult);
+    }
+
+    @ApiOperation(value = "搜索商品列表")
+    @GetMapping("/search")
+    public CustomJSONResult search(
+            @ApiParam(name = "keywords", value = "搜索关键字", required = true)
+            @RequestParam String keywords,
+            @ApiParam(name = "sort", value = "排序类型，默认排序、按照销量排序、按照价格排序")
+            @RequestParam String sort,
+            @ApiParam(name = "page", value = "第几页")
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize", value = "每页几条数据")
+            @RequestParam Integer pageSize
+    ) {
+        if (StringUtils.isBlank(keywords)) {
+            return CustomJSONResult.errorMsg("搜索关键字不能为空!");
+        }
+        if (page == null) {
+            page = DEFAULT_PAGE;
+        }
+        if (pageSize == null) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("keywords", keywords);
+        map.put("sort", sort);
+        final PagedGridResult pagedGridResult = itemService.searchItems(map, page, pageSize);
         return CustomJSONResult.ok(pagedGridResult);
     }
 }
