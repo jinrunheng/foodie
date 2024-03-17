@@ -107,6 +107,13 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
+    @Override
+    public PagedGridResult searchItemsByThirdCat(Map<String, Object> map, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        final List<SearchItemsVO> searchItemsVOList = customItemMapper.searchItemsByThirdCat(map);
+        return setPagedGrid(searchItemsVOList, page);
+    }
+
     /**
      * 根据商品 ID，等级（好，中，差）获取评价数量
      *
