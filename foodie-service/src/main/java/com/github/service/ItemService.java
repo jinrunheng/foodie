@@ -76,4 +76,14 @@ public interface ItemService {
      * @return
      */
     PagedGridResult searchItems(Map<String, Object> map, Integer page, Integer pageSize);
+
+    /**
+     * 根据三级分类查询商品列表
+     *
+     * @param map
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    PagedGridResult searchItemsByThirdCat(Map<String, Object> map, Integer page, Integer pageSize);
 }

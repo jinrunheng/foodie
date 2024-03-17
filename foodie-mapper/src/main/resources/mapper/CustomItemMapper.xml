@@ -52,4 +52,37 @@
         </choose>
     </select>
     <!--k 为默认排序，c 为按照销量从高到低排序，p 为按照价格从低到高排序-->
+
+    <!--通过三级分类查找商品-->
+    <select id="searchItemsByThirdCat" parameterType="map" resultType="com.github.vo.SearchItemsVO">
+        select i.id as itemId,
+        i.item_name as itemName,
+        i.sell_counts as sellCounts,
+        ii.url as imgUrl,
+        tmp.price_discount as price
+        from item i
+        left join item_img ii
+        on i.id = ii.item_id
+        left join
+        (
+        select item_id, MIN(price_discount) as price_discount
+        from item_spec
+        group by item_id
+        ) tmp
+        on tmp.item_id = i.id
+        where ii.is_main = 1
+        and i.cat_id = #{paramsMap.catId}
+        order by
+        <choose>
+            <when test="paramsMap.sort == &quot;c&quot;">
+                i.sell_counts desc
+            </when>
+            <when test="paramsMap.sort == &quot;p&quot;">
+                tmp.price_discount asc
+            </when>
+            <otherwise>
+                i.item_name asc
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

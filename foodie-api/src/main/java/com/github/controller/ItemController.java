@@ -126,4 +126,32 @@ public class ItemController {
         final PagedGridResult pagedGridResult = itemService.searchItems(map, page, pageSize);
         return CustomJSONResult.ok(pagedGridResult);
     }
+
+    @ApiOperation(value = "根据三级分类查询商品列表")
+    @GetMapping("/catItems")
+    public CustomJSONResult catItems(
+            @ApiParam(name = "catId", value = "三级分类 ID", required = true)
+            @RequestParam Integer catId,
+            @ApiParam(name = "sort", value = "排序类型，默认排序、按照销量排序、按照价格排序")
+            @RequestParam String sort,
+            @ApiParam(name = "page", value = "第几页")
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize", value = "每页几条数据")
+            @RequestParam Integer pageSize
+    ) {
+        if (catId == null) {
+            return CustomJSONResult.errorMsg("三级分类ID不能为空");
+        }
+        if (page == null) {
+            page = DEFAULT_PAGE;
+        }
+        if (pageSize == null) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("catId", catId);
+        map.put("sort", sort);
+        final PagedGridResult pagedGridResult = itemService.searchItemsByThirdCat(map, page, pageSize);
+        return CustomJSONResult.ok(pagedGridResult);
+    }
 }
