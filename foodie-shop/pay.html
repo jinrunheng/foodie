@@ -951,10 +951,11 @@
 				judgeUserLoginStatus() {
 					var userCookie = app.getCookie("user");
 					if (userCookie != null && userCookie != undefined && userCookie != '') {
-						var userInfoStr = decodeURIComponent(userCookie);
+						var userInfoStr = userCookie;
 						// console.log(userInfo);
 						if (userInfoStr != null && userInfoStr != undefined && userInfoStr != '') {
-							var userInfo = JSON.parse(userInfoStr);
+							var userInfoTmp = JSON.parse(userInfoStr);
+							var userInfo = JSON.parse(userInfoTmp);
                             // 判断是否是一个对象
                             if ( typeof(userInfo)  == "object" ) {
                                 this.userIsLogin = true;

@@ -10,6 +10,7 @@ import com.github.utils.DesensitizationUtil;
 import com.github.utils.PagedGridResult;
 import com.github.vo.CommentLevelCountsVO;
 import com.github.vo.ItemCommentVO;
+import com.github.vo.SearchItemsVO;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -96,6 +97,14 @@ public class ItemServiceImpl implements ItemService {
             vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
         }
         return setPagedGrid(itemCommentVOList, page);
+    }
+
+    @Override
+    public PagedGridResult searchItems(Map<String, Object> map, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<SearchItemsVO> searchItemsVOList = customItemMapper.searchItems(map);
+        return setPagedGrid(searchItemsVOList, page);
+
     }
 
     /**
