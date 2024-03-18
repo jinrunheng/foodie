@@ -1,5 +1,5 @@
 ## TODO
-finished step1,week2,4-2
+finished step1,week2,5-2
 
 ## 运行前端项目
 
@@ -11,4 +11,8 @@ finished step1,week2,4-2
 - 关闭 tomcat：在 apache-tomcat 目录下的 bin 目录，运行：`./shutdown.sh`
 
 ## Swagger2 
-- `http://localhost:8088/doc.html`     
+- `http://localhost:8088/doc.html`
+
+## 核心模块
+### 购物车
+Cookie + Redis     

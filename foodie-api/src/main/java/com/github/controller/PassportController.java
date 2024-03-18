@@ -70,6 +70,10 @@ public class PassportController {
         }
 
         final FoodieUser user = userService.createUser(userBO);
+
+        // TODO 生成用户 Token，存入 Redis
+        // TODO 同步购物车数据
+
         return CustomJSONResult.ok(user);
     }
 
@@ -98,6 +102,9 @@ public class PassportController {
         // 3. 设置 Cookie
         final String cookie = JsonUtils.objectToJson(foodieUserDTO);
         CookieUtils.setCookie(request, response, COOKIE_NAME, cookie);
+
+        // TODO 生成用户 Token，存入 Redis
+        // TODO 同步购物车数据
         return CustomJSONResult.ok(foodieUserDTO);
     }
 
