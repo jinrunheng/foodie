@@ -21,6 +21,9 @@ public class CorsConfig {
         config.addAllowedOrigin("http://center.z.mukewang.com:8080");
         config.addAllowedOrigin("http://shop.z.mukewang.com");
         config.addAllowedOrigin("http://center.z.mukewang.com");
+        config.addAllowedOrigin("http://api.z.mukewang.com:8088");
+        config.addAllowedOrigin("http://payment.t.mukewang.com/foodie-payment");
+        config.addAllowedOrigin("http://shop.z.mukewang.com:8080");
         config.addAllowedOrigin("*");
 
         // 设置是否发送cookie信息

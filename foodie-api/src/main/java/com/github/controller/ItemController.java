@@ -9,6 +9,7 @@ import com.github.utils.CustomJSONResult;
 import com.github.utils.PagedGridResult;
 import com.github.vo.CommentLevelCountsVO;
 import com.github.vo.ItemInfoVO;
+import com.github.vo.ShopCartVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -153,5 +154,23 @@ public class ItemController {
         map.put("sort", sort);
         final PagedGridResult pagedGridResult = itemService.searchItemsByThirdCat(map, page, pageSize);
         return CustomJSONResult.ok(pagedGridResult);
+    }
+
+    /**
+     * 用于刷新购物车中的数据
+     *
+     * @return
+     */
+    @GetMapping("/refresh")
+    @ApiOperation(value = "根据商品规格 ids 查找最新的商品数据")
+    public CustomJSONResult refresh(
+            @ApiParam(name = "itemSpecIds", value = "商品规格 ids，逗号拼接", required = true, example = "1001,1002,1003")
+            @RequestParam String itemSpecIds
+    ) {
+        if (StringUtils.isBlank(itemSpecIds)) {
+            return CustomJSONResult.ok();
+        }
+        List<ShopCartVO> shopCartVOS = itemService.queryItemsBySpecIds(itemSpecIds);
+        return CustomJSONResult.ok(shopCartVOS);
     }
 }
