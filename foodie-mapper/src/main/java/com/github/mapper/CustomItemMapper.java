@@ -2,6 +2,7 @@ package com.github.mapper;
 
 import com.github.vo.ItemCommentVO;
 import com.github.vo.SearchItemsVO;
+import com.github.vo.ShopCartVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface CustomItemMapper {
     List<SearchItemsVO> searchItems(@Param("paramsMap") Map<String, Object> paramsMap);
 
     List<SearchItemsVO> searchItemsByThirdCat(@Param("paramsMap") Map<String, Object> paramsMap);
+
+    List<ShopCartVO> queryItemsBySpecIds(@Param("paramsList") List<String> specIds);
 }

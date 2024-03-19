@@ -11,10 +11,13 @@ import com.github.utils.PagedGridResult;
 import com.github.vo.CommentLevelCountsVO;
 import com.github.vo.ItemCommentVO;
 import com.github.vo.SearchItemsVO;
+import com.github.vo.ShopCartVO;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -112,6 +115,14 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page, pageSize);
         final List<SearchItemsVO> searchItemsVOList = customItemMapper.searchItemsByThirdCat(map);
         return setPagedGrid(searchItemsVOList, page);
+    }
+
+    @Override
+    public List<ShopCartVO> queryItemsBySpecIds(String specIds) {
+        String[] split = specIds.split("");
+        List<String> list = new ArrayList<>();
+        Collections.addAll(list, split);
+        return customItemMapper.queryItemsBySpecIds(list);
     }
 
     /**

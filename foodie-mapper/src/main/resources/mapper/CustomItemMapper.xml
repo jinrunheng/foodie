@@ -85,4 +85,24 @@
             </otherwise>
         </choose>
     </select>
+
+    <select id="queryItemsBySpecIds" parameterType="list" resultType="com.github.vo.ShopCartVO">
+        select t_item.id as itemId,
+        t_item.item_name as itemName,
+        t_item_img.url as itemImgUrl,
+        t_item_spec.id as specId,
+        t_item_spec.name as specName,
+        t_item_spec.price_discount as priceDiscount,
+        t_item_spec.price_normal as priceNormal
+        from item_spec t_item_spec
+        left join item t_item
+        on t_item.id = t_item_spec.item_id
+        left join item_img t_item_img
+        on t_item_img.item_id = t_item.id
+        where t_item_img.is_main = 1
+        and t_item_spec.id in
+        <foreach collection="paramsList" index="index" item="specId" open="(" separator="," close=")">
+            #{specId}
+        </foreach>
+    </select>
 </mapper>
