@@ -119,7 +119,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ShopCartVO> queryItemsBySpecIds(String specIds) {
-        String[] split = specIds.split("");
+        String[] split = specIds.split("\\,");
         List<String> list = new ArrayList<>();
         Collections.addAll(list, split);
         return customItemMapper.queryItemsBySpecIds(list);
