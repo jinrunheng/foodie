@@ -34,9 +34,28 @@ public class ShopCartController {
         if (StringUtils.isBlank(userId)) {
             return CustomJSONResult.errorMsg("用户 ID 不能为空!");
         }
+        // test
         log.info("shopCartBO:{}", shopCartBO);
         // TODO: 用户在登陆的情况下，添加商品到购物车，会同时在后端同步购物车到 Redis
         return CustomJSONResult.ok();
     }
 
+
+    @ApiOperation(value = "从购物车中删除商品")
+    @PostMapping("/del")
+    public CustomJSONResult del(
+            @RequestParam String userId,
+            @RequestParam String itemSpecId,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(itemSpecId)) {
+            return CustomJSONResult.errorMsg("用户 ID 或产品规格 ID 不能为空!");
+        }
+        // test
+        log.info("itemSpecId:{}", itemSpecId);
+
+        // TODO: 用户在页面删除购物车中的商品数据，如果此时用户已经登陆，则需要同步删除 Redis 中的数据
+        return CustomJSONResult.ok();
+    }
 }
