@@ -1,5 +1,6 @@
 package com.github.service;
 
+import com.github.bo.AddressBO;
 import com.github.pojo.UserAddress;
 
 import java.util.List;
@@ -17,4 +18,11 @@ public interface AddressService {
      * @return
      */
     List<UserAddress> queryAllUserAddr(String userId);
+
+    /**
+     * 用户新增地址
+     *
+     * @param addressBO
+     */
+    void addNewUserAddr(AddressBO addressBO);
 }
