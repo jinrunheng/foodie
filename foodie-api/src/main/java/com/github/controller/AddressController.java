@@ -1,16 +1,15 @@
 package com.github.controller;
 
+import com.github.bo.AddressBO;
 import com.github.pojo.UserAddress;
 import com.github.service.AddressService;
 import com.github.utils.CustomJSONResult;
+import com.github.utils.MobileCheckUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +22,9 @@ import java.util.List;
 @RestController
 @RequestMapping("address")
 public class AddressController {
+
+    private static int RECEIVER_MAX_LEN = 12;
+
 
     @Autowired
     private AddressService addressService;
@@ -40,4 +42,49 @@ public class AddressController {
         return CustomJSONResult.ok(userAddresses);
     }
 
+    @PostMapping("/add")
+    @ApiOperation(value = "新增用户地址")
+    public CustomJSONResult add(
+            @RequestBody AddressBO addressBO
+    ) {
+        final CustomJSONResult checkResult = checkAddressForm(addressBO);
+        if (checkResult.getStatus() != 200) {
+            return checkResult;
+        }
+        addressService.addNewUserAddr(addressBO);
+        return CustomJSONResult.ok();
+    }
+
+
+    /**
+     * 检查用户地址格式
+     *
+     * @param addressBO
+     * @return
+     */
+    private CustomJSONResult checkAddressForm(AddressBO addressBO) {
+        final String receiver = addressBO.getReceiver();
+        if (StringUtils.isBlank(receiver)) {
+            return CustomJSONResult.errorMsg("收货人不能为空!");
+        }
+        if (receiver.length() > RECEIVER_MAX_LEN) {
+            return CustomJSONResult.errorMsg("收货人长度不能超过 12!");
+        }
+        final String mobile = addressBO.getMobile();
+        if (!MobileCheckUtils.check(mobile)) {
+            return CustomJSONResult.errorMsg("收货人手机号格式错误!");
+        }
+
+        final String province = addressBO.getProvince();
+        final String city = addressBO.getCity();
+        final String district = addressBO.getDistrict();
+        final String detail = addressBO.getDetail();
+        if (StringUtils.isBlank(province) ||
+                StringUtils.isBlank(city) ||
+                StringUtils.isBlank(district) ||
+                StringUtils.isBlank(detail)) {
+            return CustomJSONResult.errorMsg("收获地址信息不能为空！");
+        }
+        return CustomJSONResult.ok();
+    }
 }
