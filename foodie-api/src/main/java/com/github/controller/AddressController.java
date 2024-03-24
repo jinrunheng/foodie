@@ -55,6 +55,22 @@ public class AddressController {
         return CustomJSONResult.ok();
     }
 
+    @PostMapping("/update")
+    @ApiOperation(value = "修改用户地址")
+    public CustomJSONResult update(
+            @RequestBody AddressBO addressBO
+    ) {
+        if (StringUtils.isBlank(addressBO.getAddressId())) {
+            return CustomJSONResult.errorMap("地址 ID 不能为空！");
+        }
+        final CustomJSONResult checkResult = checkAddressForm(addressBO);
+        if (checkResult.getStatus() != 200) {
+            return checkResult;
+        }
+        addressService.updateUserAddr(addressBO);
+        return CustomJSONResult.ok();
+    }
+
 
     /**
      * 检查用户地址格式
