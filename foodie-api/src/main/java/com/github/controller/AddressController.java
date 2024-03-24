@@ -71,6 +71,20 @@ public class AddressController {
         return CustomJSONResult.ok();
     }
 
+    @PostMapping("/delete")
+    @ApiOperation(value = "删除用户地址")
+    public CustomJSONResult delete(
+            @RequestParam String userId,
+            @RequestParam String addressId
+    ) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)) {
+            return CustomJSONResult.errorMap("用户 ID 或地址 ID 不能为空！");
+        }
+
+        addressService.delUserAddr(userId, addressId);
+        return CustomJSONResult.ok();
+    }
+
 
     /**
      * 检查用户地址格式

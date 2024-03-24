@@ -32,4 +32,12 @@ public interface AddressService {
      * @param addressBO
      */
     void updateUserAddr(AddressBO addressBO);
+
+    /**
+     * 用户删除地址
+     *
+     * @param userId
+     * @param addressId
+     */
+    void delUserAddr(String userId, String addressId);
 }
