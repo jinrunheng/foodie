@@ -40,4 +40,12 @@ public interface AddressService {
      * @param addressId
      */
     void delUserAddr(String userId, String addressId);
+
+    /**
+     * 修改地址为用户默认地址
+     *
+     * @param userId
+     * @param addressId
+     */
+    void updateUserAddrDefault(String userId, String addressId);
 }

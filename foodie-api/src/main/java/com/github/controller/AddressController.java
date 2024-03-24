@@ -85,6 +85,20 @@ public class AddressController {
         return CustomJSONResult.ok();
     }
 
+    @PostMapping("/setDefalut")
+    @ApiOperation(value = "用户设置默认地址")
+    public CustomJSONResult setDefault(
+            @RequestParam String userId,
+            @RequestParam String addressId
+    ) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)) {
+            return CustomJSONResult.errorMap("用户 ID 或地址 ID 不能为空！");
+        }
+
+        addressService.updateUserAddrDefault(userId, addressId);
+        return CustomJSONResult.ok();
+    }
+
 
     /**
      * 检查用户地址格式

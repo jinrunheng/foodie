@@ -2,6 +2,7 @@ package com.github.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.github.bo.AddressBO;
+import com.github.enums.YesOrNo;
 import com.github.mapper.UserAddressMapper;
 import com.github.pojo.UserAddress;
 import com.github.service.AddressService;
@@ -23,7 +24,6 @@ import java.util.List;
 @Service
 @Slf4j
 public class AddressServiceImpl implements AddressService {
-
     @Resource
     private UserAddressMapper userAddressMapper;
 
@@ -71,5 +71,27 @@ public class AddressServiceImpl implements AddressService {
         userAddress.setId(addressId);
         userAddress.setUserId(userId);
         userAddressMapper.delete(userAddress);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateUserAddrDefault(String userId, String addressId) {
+        // 1. 查找默认地址，设置为非默认
+        UserAddress userAddress = new UserAddress();
+        userAddress.setUserId(userId);
+        userAddress.setIsDefault(YesOrNo.YES.type);
+        final List<UserAddress> select = userAddressMapper.select(userAddress);
+        for (UserAddress ud : select) {
+            ud.setIsDefault(YesOrNo.NO.type);
+            userAddressMapper.updateByPrimaryKeySelective(ud);
+        }
+
+        // 2. 根据地址 id 修改为默认地址
+        final UserAddress defaultAddr = new UserAddress();
+        defaultAddr.setId(addressId);
+        defaultAddr.setUserId(userId);
+        defaultAddr.setIsDefault(YesOrNo.YES.type);
+        userAddressMapper.updateByPrimaryKeySelective(defaultAddr);
+
     }
 }
