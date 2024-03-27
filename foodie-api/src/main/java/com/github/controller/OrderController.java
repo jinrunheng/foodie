@@ -1,6 +1,7 @@
 package com.github.controller;
 
 import com.github.bo.SubmitOrderBO;
+import com.github.enums.PayMethodEnum;
 import com.github.utils.CustomJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,11 @@ public class OrderController {
     public CustomJSONResult create(
             @RequestBody SubmitOrderBO submitOrderBO
     ) {
+        if (submitOrderBO.getPayMethod() != PayMethodEnum.WEIXIN_PAY.type &&
+                submitOrderBO.getPayMethod() != PayMethodEnum.ALIPAY.type
+        ) {
+            return CustomJSONResult.errorMsg("不支持的支付方式！");
+        }
         log.info("submitOrderBO", submitOrderBO);
         // TODO
         // 1. 创建订单
