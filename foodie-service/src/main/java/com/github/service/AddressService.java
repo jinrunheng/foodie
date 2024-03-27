@@ -20,6 +20,14 @@ public interface AddressService {
     List<UserAddress> queryAllUserAddr(String userId);
 
     /**
+     * 根据用户 ID，地址 ID，查询地址
+     * @param userId
+     * @param addressId
+     * @return
+     */
+    UserAddress queryUserAddr(String userId, String addressId);
+
+    /**
      * 用户新增地址
      *
      * @param addressBO

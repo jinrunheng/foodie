@@ -34,6 +34,14 @@ public class AddressServiceImpl implements AddressService {
         return userAddressMapper.select(userAddress);
     }
 
+    @Override
+    public UserAddress queryUserAddr(String userId, String addressId) {
+        UserAddress userAddress = new UserAddress();
+        userAddress.setUserId(userId);
+        userAddress.setId(addressId);
+        return userAddressMapper.selectOne(userAddress);
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public void addNewUserAddr(AddressBO addressBO) {
