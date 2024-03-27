@@ -1,6 +1,7 @@
 package com.github.service.impl;
 
 import com.github.enums.CommentLevel;
+import com.github.enums.YesOrNo;
 import com.github.mapper.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -16,10 +17,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author Dooby Kim
@@ -123,6 +121,20 @@ public class ItemServiceImpl implements ItemService {
         List<String> list = new ArrayList<>();
         Collections.addAll(list, split);
         return customItemMapper.queryItemsBySpecIds(list);
+    }
+
+    @Override
+    public ItemSpec queryItemSpecById(String specId) {
+        return itemSpecMapper.selectByPrimaryKey(specId);
+    }
+
+    @Override
+    public String queryItemMainImgById(String itemId) {
+        ItemImg itemImg = new ItemImg();
+        itemImg.setItemId(itemId);
+        itemImg.setIsMain(YesOrNo.YES.type);
+        final ItemImg itemMainImg = itemImgMapper.selectOne(itemImg);
+        return Objects.isNull(itemMainImg) ? null : itemMainImg.getUrl();
     }
 
     /**
