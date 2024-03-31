@@ -2,9 +2,11 @@ package com.github.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.github.bo.SubmitOrderBO;
+import com.github.enums.OrderStatusEnum;
 import com.github.enums.YesOrNo;
 import com.github.mapper.OrderItemMapper;
 import com.github.mapper.OrderMapper;
+import com.github.mapper.OrderStatusMapper;
 import com.github.pojo.*;
 import com.github.service.AddressService;
 import com.github.service.ItemService;
@@ -34,6 +36,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private OrderItemMapper orderItemMapper;
+
+    @Resource
+    private OrderStatusMapper orderStatusMapper;
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -86,10 +91,19 @@ public class OrderServiceImpl implements OrderService {
             subOrderItem.setItemSpecName(itemSpec.getName());
             subOrderItem.setPrice(itemSpec.getPriceDiscount());
             orderItemMapper.insert(subOrderItem);
+            // 减库存
+            itemService.decreaseItemSpecStock(itemSpecId,buyCounts);
         }
         order.setTotalAmount(totalAmount);
         order.setRealPayAmount(realPayAmount);
         // 保存订单
         orderMapper.insert(order);
+
+        // 保存到订单状态表
+        OrderStatus waitPayOrderStatus = new OrderStatus();
+        waitPayOrderStatus.setOrderId(order.getId());
+        waitPayOrderStatus.setOrderStatus(OrderStatusEnum.WAIT_PAY.type);
+        waitPayOrderStatus.setCreatedTime(new Date());
+        orderStatusMapper.insert(waitPayOrderStatus);
     }
 }
