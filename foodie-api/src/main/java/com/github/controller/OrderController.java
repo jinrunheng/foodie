@@ -2,6 +2,7 @@ package com.github.controller;
 
 import com.github.bo.SubmitOrderBO;
 import com.github.enums.PayMethodEnum;
+import com.github.service.OrderService;
 import com.github.utils.CustomJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @Author Dooby Kim
@@ -21,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("orders")
 @Slf4j
 public class OrderController {
+
+    @Resource
+    private OrderService orderService;
 
     @PostMapping("/create")
     @ApiOperation(value = "用户下单")
@@ -35,6 +41,7 @@ public class OrderController {
         log.info("submitOrderBO", submitOrderBO);
         // TODO
         // 1. 创建订单
+        orderService.createOrder(submitOrderBO);
         // 2. 创建订单后，移除购物车中已结算的商品
         // 3. 向支付中心发送当前订单，用于保存支付中心的订单数据
         return CustomJSONResult.ok();

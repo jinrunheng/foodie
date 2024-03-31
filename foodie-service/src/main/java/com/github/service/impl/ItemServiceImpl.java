@@ -14,6 +14,8 @@ import com.github.vo.ItemCommentVO;
 import com.github.vo.SearchItemsVO;
 import com.github.vo.ShopCartVO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -135,6 +137,22 @@ public class ItemServiceImpl implements ItemService {
         itemImg.setIsMain(YesOrNo.YES.type);
         final ItemImg itemMainImg = itemImgMapper.selectOne(itemImg);
         return Objects.isNull(itemMainImg) ? null : itemMainImg.getUrl();
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void decreaseItemSpecStock(String specId, int buyCounts) {
+        // 防止超卖
+        // 1. 方法使用 synchronized（不推荐，性能低下）
+        // 2. 分布式锁
+        // 3. 乐观锁
+
+        // 乐观锁
+        int res = customItemMapper.decreaseItemSpecStock(specId, buyCounts);
+        // 如果更新失败，则说明超卖，减库存失败，手动触发异常回滚
+        if (res != 1) {
+            throw new RuntimeException("库存不足，订单创建失败！");
+        }
     }
 
     /**

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.mapper.CustomOrderMapper">
+    <insert id="createOrder" parameterType="com.github.pojo.Order">
+        insert into `order`
+        (id, user_id, receiver_name, receiver_mobile, receiver_address, total_amount, real_pay_amount, post_amount,
+         pay_method, left_msg, extand, is_comment, is_delete, created_time, updated_time)
+        values (#{id}, #{userId}, #{receiverName}, #{receiverMobile}, #{receiverAddress}, #{totalAmount},
+                #{realPayAmount}, #{postAmount},
+                #{payMethod}, #{leftMsg}, #{extand}, #{isComment}, #{isDelete}, #{createdTime}, #{updatedTime})
+    </insert>
+
+
+</mapper>
