@@ -4,6 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import com.github.bo.SubmitOrderBO;
 import com.github.enums.OrderStatusEnum;
 import com.github.enums.YesOrNo;
+import com.github.mapper.CustomOrderMapper;
 import com.github.mapper.OrderItemMapper;
 import com.github.mapper.OrderMapper;
 import com.github.mapper.OrderStatusMapper;
@@ -25,6 +26,10 @@ import java.util.Date;
  */
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    @Resource
+    private CustomOrderMapper customOrderMapper;
+
     @Resource
     private OrderMapper orderMapper;
 
@@ -56,6 +61,7 @@ public class OrderServiceImpl implements OrderService {
         // 保存订单数据
         Order order = new Order();
         order.setId(IdUtil.getSnowflakeNextIdStr());
+        order.setUserId(userId);
         order.setReceiverName(userAddress.getReceiver());
         order.setReceiverMobile(userAddress.getMobile());
         order.setReceiverAddress(userAddress.getProvince() + " " + userAddress.getCity() + " " + userAddress.getDistrict() + " " + userAddress.getDetail());
@@ -92,12 +98,12 @@ public class OrderServiceImpl implements OrderService {
             subOrderItem.setPrice(itemSpec.getPriceDiscount());
             orderItemMapper.insert(subOrderItem);
             // 减库存
-            itemService.decreaseItemSpecStock(itemSpecId,buyCounts);
+            itemService.decreaseItemSpecStock(itemSpecId, buyCounts);
         }
         order.setTotalAmount(totalAmount);
         order.setRealPayAmount(realPayAmount);
         // 保存订单
-        orderMapper.insert(order);
+        customOrderMapper.createOrder(order);
 
         // 保存到订单状态表
         OrderStatus waitPayOrderStatus = new OrderStatus();
