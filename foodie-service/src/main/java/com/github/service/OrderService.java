@@ -9,9 +9,9 @@ import com.github.bo.SubmitOrderBO;
  */
 public interface OrderService {
     /**
-     * 创建订单
+     * 创建订单，返回 orderId
      *
      * @param submitOrderBO
      */
-    void createOrder(SubmitOrderBO submitOrderBO);
+    String createOrder(SubmitOrderBO submitOrderBO);
 }
