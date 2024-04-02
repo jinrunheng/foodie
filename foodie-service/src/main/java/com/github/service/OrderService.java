@@ -1,6 +1,7 @@
 package com.github.service;
 
 import com.github.bo.SubmitOrderBO;
+import com.github.vo.OrderVO;
 
 /**
  * @Author Dooby Kim
@@ -13,7 +14,7 @@ public interface OrderService {
      *
      * @param submitOrderBO
      */
-    String createOrder(SubmitOrderBO submitOrderBO);
+    OrderVO createOrder(SubmitOrderBO submitOrderBO);
 
     /**
      * 修改订单状态
