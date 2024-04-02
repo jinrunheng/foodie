@@ -1,18 +1,23 @@
 package com.github.controller;
 
 import com.github.bo.SubmitOrderBO;
+import com.github.enums.OrderStatusEnum;
 import com.github.enums.PayMethodEnum;
 import com.github.service.OrderService;
+import com.github.utils.CookieUtils;
 import com.github.utils.CustomJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author Dooby Kim
@@ -25,13 +30,18 @@ import javax.annotation.Resource;
 @Slf4j
 public class OrderController {
 
+    // 购物车 Cookie
+    private static final String FOODIE_SHOPCART = "shopcart";
+
     @Resource
     private OrderService orderService;
 
     @PostMapping("/create")
     @ApiOperation(value = "用户下单")
     public CustomJSONResult create(
-            @RequestBody SubmitOrderBO submitOrderBO
+            @RequestBody SubmitOrderBO submitOrderBO,
+            HttpServletRequest request,
+            HttpServletResponse response
     ) {
         if (submitOrderBO.getPayMethod() != PayMethodEnum.WEIXIN_PAY.type &&
                 submitOrderBO.getPayMethod() != PayMethodEnum.ALIPAY.type
@@ -41,9 +51,24 @@ public class OrderController {
         log.info("submitOrderBO", submitOrderBO);
         // TODO
         // 1. 创建订单
-        orderService.createOrder(submitOrderBO);
+        final String orderId = orderService.createOrder(submitOrderBO);
         // 2. 创建订单后，移除购物车中已结算的商品
+        // TODO 整合 Redis 后，完善购物车中的已结算商品移除，并同步前端 Cookie
+        // CookieUtils.setCookie(request, response, FOODIE_SHOPCART, "", true);
         // 3. 向支付中心发送当前订单，用于保存支付中心的订单数据
-        return CustomJSONResult.ok();
+        return CustomJSONResult.ok(orderId);
+    }
+
+    /**
+     * 微信支付系统通知-->支付中心--->通知后台系统
+     *
+     * @param merchantOrderId
+     * @return
+     */
+    @ApiOperation(value = "支付中心通知")
+    @PostMapping("notifyMerchantOrderPaid")
+    public Integer notifyMerchantOrderPaid(String merchantOrderId) {
+        orderService.updateOrderStatus(merchantOrderId, OrderStatusEnum.WAIT_DELIVER.type);
+        return HttpStatus.OK.value();
     }
 }
