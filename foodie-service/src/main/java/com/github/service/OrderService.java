@@ -23,4 +23,9 @@ public interface OrderService {
      * @param orderStatus
      */
     void updateOrderStatus(String orderId, Integer orderStatus);
+
+    /**
+     * 关闭超时未支付的订单，即：将未付款的订单 order status 从 WAIT_PAY(10, "待付款")  变为 CLOSE(50, "交易关闭");
+     */
+    void closeOrder();
 }
