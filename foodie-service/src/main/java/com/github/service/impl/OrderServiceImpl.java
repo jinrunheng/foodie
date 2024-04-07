@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author Dooby Kim
@@ -136,5 +138,29 @@ public class OrderServiceImpl implements OrderService {
         paidStatus.setPayTime(new Date());
 
         orderStatusMapper.updateByPrimaryKeySelective(paidStatus);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void closeOrder() {
+        // 查询所有未付款订单，判断时间是否超时，超时时间为 24 h，超时则关闭订单
+        OrderStatus queryOrder = new OrderStatus();
+        queryOrder.setOrderStatus(OrderStatusEnum.WAIT_PAY.type);
+        final List<OrderStatus> select = orderStatusMapper.select(queryOrder);
+        for (OrderStatus orderStatus : select) {
+            // 获取订单创建时间
+            final Date createdTime = orderStatus.getCreatedTime();
+            // 与当前时间进行对比
+            Date currentDate = new Date();
+            long diffInHours = TimeUnit.MILLISECONDS.toHours(currentDate.getTime() - createdTime.getTime());
+            if (diffInHours > 24) {
+                // 如果订单超过 24 h，则关闭订单
+                OrderStatus close = new OrderStatus();
+                close.setOrderId(orderStatus.getOrderId());
+                close.setOrderStatus(OrderStatusEnum.CLOSE.type);
+                close.setCloseTime(new Date());
+                orderStatusMapper.updateByPrimaryKeySelective(close);
+            }
+        }
     }
 }
