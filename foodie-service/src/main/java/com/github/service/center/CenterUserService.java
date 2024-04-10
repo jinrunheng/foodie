@@ -1,5 +1,6 @@
 package com.github.service.center;
 
+import com.github.bo.center.CenterUserBO;
 import com.github.pojo.FoodieUser;
 
 /**
@@ -16,4 +17,12 @@ public interface CenterUserService {
      * @return
      */
     FoodieUser queryUserInfo(String userId);
+
+    /**
+     * 根据用户 ID，修改用户信息
+     *
+     * @param userId
+     * @param userBO
+     */
+    FoodieUser updateUserInfo(String userId, CenterUserBO userBO);
 }

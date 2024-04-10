@@ -1,11 +1,17 @@
 package com.github.service.impl.center;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.github.bo.center.CenterUserBO;
 import com.github.mapper.FoodieUserMapper;
 import com.github.pojo.FoodieUser;
 import com.github.service.center.CenterUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @Author Dooby Kim
@@ -24,5 +30,16 @@ public class CenterUserServiceImpl implements CenterUserService {
         // 隐藏密码信息
         foodieUser.setPassword(null);
         return foodieUser;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public FoodieUser updateUserInfo(String userId, CenterUserBO userBO) {
+        FoodieUser updateUser = new FoodieUser();
+        BeanUtils.copyProperties(userBO, updateUser);
+        updateUser.setId(userId);
+        updateUser.setUpdatedTime(new Date());
+        userMapper.updateByPrimaryKeySelective(updateUser);
+        return queryUserInfo(userId);
     }
 }

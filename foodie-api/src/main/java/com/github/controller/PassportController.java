@@ -10,6 +10,7 @@ import com.github.utils.JsonUtils;
 import com.github.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.Objects;
 @Api(tags = {"用于登陆/注册的相关接口"})
 @RestController
 @RequestMapping("passport")
+@Slf4j
 public class PassportController {
 
     private static final String COOKIE_NAME = "user";
@@ -90,7 +92,7 @@ public class PassportController {
         try {
             md5Password = MD5Utils.getMD5Str(password);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("error", e);
         }
         // 2. 查询用户是否存在，如果不存在，返回用户名或密码不正确提示信息
         final FoodieUser foodieUser = userService.queryUserForLogin(username, md5Password);
