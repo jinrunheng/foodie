@@ -151,19 +151,11 @@
 					// 通过cookie判断用户是否登录
 					judgeUserLoginStatus() {
 						var userCookie = app.getCookie("user");
-						if (
-							userCookie != null &&
-							userCookie != undefined &&
-							userCookie != ""
-						) {
-							var userInfoStr = decodeURIComponent(userCookie);
-							// console.log(userInfoStr);
-							if (
-								userInfoStr != null &&
-								userInfoStr != undefined &&
-								userInfoStr != ""
-							) {
-								var userInfo = JSON.parse(userInfoStr);
+						if (userCookie != null && userCookie != undefined && userCookie != '') {
+							var userInfoStr = userCookie;
+							if (userInfoStr != null && userInfoStr != undefined && userInfoStr != '') {
+								var userInfoTmp = JSON.parse(userInfoStr);
+								var userInfo = JSON.parse(userInfoTmp);
 								// 判断是否是一个对象
 								if ( typeof(userInfo)  == "object" ) {
 									this.userIsLogin = true;
