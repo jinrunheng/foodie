@@ -323,33 +323,26 @@
 				// 通过cookie判断用户是否登录
 				judgeUserLoginStatus() {
 					var userCookie = app.getCookie("user");
-					if (
-						userCookie != null &&
-						userCookie != undefined &&
-						userCookie != ""
-					) {
-						var userInfoStr = decodeURIComponent(userCookie);
-						// console.log(userInfo);
-						if (
-							userInfoStr != null &&
-							userInfoStr != undefined &&
-							userInfoStr != ""
-						) {
-							var userInfo = JSON.parse(userInfoStr);
-                            // 判断是否是一个对象
-                            if ( typeof(userInfo)  == "object" ) {
-                                this.userIsLogin = true;
-                                // console.log(userInfo);
-                                this.userInfo = userInfo;
-                            } else {
-                                this.userIsLogin = false;
-                                this.userInfo = {};
-                            }
+					if (userCookie != null && userCookie != undefined && userCookie != '') {
+						var userInfoStr = userCookie;
+						if (userInfoStr != null && userInfoStr != undefined && userInfoStr != '') {
+							var userInfoTmp = JSON.parse(userInfoStr);
+							var userInfo = JSON.parse(userInfoTmp);
+							// 判断是否是一个对象
+							if ( typeof(userInfo)  == "object" ) {
+								this.userIsLogin = true;
+								// console.log(userInfo);
+								this.userInfo = userInfo;
+							} else {
+								this.userIsLogin = false;
+								this.userInfo = {};
+							}
 						}
 					} else {
 						this.userIsLogin = false;
 						this.userInfo = {};
 					}
+
 				}
 			}
 		});
