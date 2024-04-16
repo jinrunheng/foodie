@@ -1,6 +1,7 @@
 package com.github.controller.center;
 
 import com.github.bo.center.CenterUserBO;
+import com.github.config.FileUpload;
 import com.github.dto.FoodieUserDTO;
 import com.github.pojo.FoodieUser;
 import com.github.service.center.CenterUserService;
@@ -43,7 +44,9 @@ import java.util.Objects;
 public class CenterUserController {
 
     private static final String COOKIE_NAME = "user";
-    private static final String USER_AVATAR_LOCATION = "/Users/macbook/Downloads/foodie_img/foodie_avatar";
+
+    @Resource
+    private FileUpload fileUpload;
 
     @Resource
     private CenterUserService centerUserService;
@@ -75,7 +78,7 @@ public class CenterUserController {
             HttpServletRequest request, HttpServletResponse response
     ) {
         // 定义用户头像保存地址
-        String uploadSpace = USER_AVATAR_LOCATION;
+        String uploadSpace = fileUpload.getImageUserFaceLocation();
         // 在路径上要为每一个用户增加 userId 作为路径区分，用于区分不同用户上传
         String uploadPathPrefix = "/" + userId;
         if (!Objects.isNull(file)) {
