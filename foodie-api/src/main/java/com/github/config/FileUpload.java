@@ -22,4 +22,5 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class FileUpload {
     private String imageUserFaceLocation;
+    private String imageServerUrl;
 }
