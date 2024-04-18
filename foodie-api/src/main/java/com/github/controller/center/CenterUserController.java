@@ -8,6 +8,7 @@ import com.github.pojo.FoodieUser;
 import com.github.service.center.CenterUserService;
 import com.github.utils.CookieUtils;
 import com.github.utils.CustomJSONResult;
+import com.github.utils.ImgSuffixCheckUtil;
 import com.github.utils.JsonUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -87,6 +88,10 @@ public class CenterUserController {
                 final String[] split = fileName.split("\\.");
                 // 获取文件后缀名
                 String fileSuffix = split[split.length - 1];
+                // 对后缀名进行判断，对图片格式进行限制
+                if (!ImgSuffixCheckUtil.isIllegal(fileSuffix)) {
+                    return CustomJSONResult.errorMsg("图片格式错误！");
+                }
                 // 文件名定义
                 // face-{userId}.png
                 // 覆盖式上传
