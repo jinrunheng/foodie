@@ -1,5 +1,6 @@
 package com.github.controller.center;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.bo.center.CenterUserBO;
 import com.github.config.FileUpload;
 import com.github.dto.FoodieUserDTO;
@@ -27,10 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @Author Dooby Kim
@@ -67,6 +65,7 @@ public class CenterUserController {
         BeanUtils.copyProperties(foodieUser, foodieUserDTO);
         final String cookie = JsonUtils.objectToJson(foodieUserDTO);
         CookieUtils.setCookie(request, response, COOKIE_NAME, cookie);
+        // TODO 后续整改，增加 token 整合 redis 分布式会话
         return CustomJSONResult.ok(foodieUser);
     }
 
@@ -80,7 +79,7 @@ public class CenterUserController {
         // 定义用户头像保存地址
         String uploadSpace = fileUpload.getImageUserFaceLocation();
         // 在路径上要为每一个用户增加 userId 作为路径区分，用于区分不同用户上传
-        String uploadPathPrefix = "/" + userId;
+        String uploadPathPrefix = userId;
         if (!Objects.isNull(file)) {
             // 开始文件上传
             final String fileName = file.getOriginalFilename();
@@ -105,6 +104,20 @@ public class CenterUserController {
                 } catch (IOException exception) {
                     log.error("error", exception);
                 }
+
+                // 更新用户头像 -> 数据库
+                // 图片服务地址
+                // 由于浏览器可能存在缓存，所以我们在后端添加时间戳保证更新后的图片可以及时刷新
+                String imageServerUrl = fileUpload.getImageServerUrl() + uploadPathPrefix + "/" + newFileName;
+                String imageSeverUrlWithTimeStamp = imageServerUrl + "?t=" + DateUtil.format(new Date(), "yyyyMMddHHmmss");
+                final FoodieUser result = centerUserService.updateUserFace(userId, imageSeverUrlWithTimeStamp);
+                // 用户更新后，也要更新 Cookie
+                FoodieUserDTO foodieUserDTO = new FoodieUserDTO();
+                BeanUtils.copyProperties(result, foodieUserDTO);
+                final String cookie = JsonUtils.objectToJson(foodieUserDTO);
+                CookieUtils.setCookie(request, response, COOKIE_NAME, cookie);
+                // TODO 后续整改，增加 token 整合 redis 分布式会话
+                return CustomJSONResult.ok();
             }
         } else {
             return CustomJSONResult.errorMsg("文件不能为空！");

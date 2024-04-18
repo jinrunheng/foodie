@@ -25,4 +25,13 @@ public interface CenterUserService {
      * @param userBO
      */
     FoodieUser updateUserInfo(String userId, CenterUserBO userBO);
+
+    /**
+     * 更新用户头像
+     *
+     * @param userId
+     * @param faceUrl
+     * @return
+     */
+    FoodieUser updateUserFace(String userId, String faceUrl);
 }
