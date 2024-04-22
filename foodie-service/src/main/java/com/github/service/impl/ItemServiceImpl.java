@@ -99,22 +99,21 @@ public class ItemServiceImpl implements ItemService {
         for (ItemCommentVO vo : itemCommentVOList) {
             vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
         }
-        return setPagedGrid(itemCommentVOList, page);
+        return PagedGridResult.setPagedGrid(itemCommentVOList, page);
     }
 
     @Override
     public PagedGridResult searchItems(Map<String, Object> map, Integer page, Integer pageSize) {
         PageHelper.startPage(page, pageSize);
         List<SearchItemsVO> searchItemsVOList = customItemMapper.searchItems(map);
-        return setPagedGrid(searchItemsVOList, page);
-
+        return PagedGridResult.setPagedGrid(searchItemsVOList, page);
     }
 
     @Override
     public PagedGridResult searchItemsByThirdCat(Map<String, Object> map, Integer page, Integer pageSize) {
         PageHelper.startPage(page, pageSize);
         final List<SearchItemsVO> searchItemsVOList = customItemMapper.searchItemsByThirdCat(map);
-        return setPagedGrid(searchItemsVOList, page);
+        return PagedGridResult.setPagedGrid(searchItemsVOList, page);
     }
 
     @Override
@@ -170,16 +169,4 @@ public class ItemServiceImpl implements ItemService {
         }
         return itemCommentMapper.selectCount(condition);
     }
-
-    private PagedGridResult setPagedGrid(List<?> list, Integer page) {
-        PageInfo<?> pageList = new PageInfo<>(list);
-        PagedGridResult pagedGridResult = new PagedGridResult();
-        pagedGridResult.setPage(page);
-        pagedGridResult.setRows(list);
-        pagedGridResult.setTotal(pageList.getPages());
-        pagedGridResult.setRecords(pageList.getTotal());
-        return pagedGridResult;
-    }
-
-
 }
