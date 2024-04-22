@@ -32,18 +32,8 @@ public class MyOrderServiceImpl implements MyOrderService {
         if (!Objects.isNull(orderStatus)) {
             map.put("orderStatus", orderStatus);
         }
-        List<MyOrderVO> myOrderVOS = customOrderMapper.queryUserOrders(map);
+        List<MyOrderVO> myOrderVOList = customOrderMapper.queryUserOrders(map);
         PageHelper.startPage(page, pageSize);
-        return setPagedGrid(myOrderVOS, page);
-    }
-
-    private PagedGridResult setPagedGrid(List<?> list, Integer page) {
-        PageInfo<?> pageList = new PageInfo<>(list);
-        PagedGridResult pagedGridResult = new PagedGridResult();
-        pagedGridResult.setPage(page);
-        pagedGridResult.setRows(list);
-        pagedGridResult.setTotal(pageList.getPages());
-        pagedGridResult.setRecords(pageList.getTotal());
-        return pagedGridResult;
+        return PagedGridResult.setPagedGrid(myOrderVOList, page);
     }
 }
