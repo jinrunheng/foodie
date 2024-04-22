@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.github.mapper.CustomOrderMapper">
+    <resultMap id="myOrdersVO" type="com.github.vo.MyOrderVO">
+        <id column="orderId" property="orderId"/>
+        <result column="createdTime" property="createdTime"/>
+        <result column="payMethod" property="payMethod"/>
+        <result column="realPayAmount" property="realPayAmount"/>
+        <result column="postAmount" property="postAmount"/>
+        <result column="isComment" property="isComment"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <collection property="subOrderItemList" ofType="com.github.vo.MySubOrderItemVO">
+            <result column="itemId" property="itemId"/>
+            <result column="itemImg" property="itemImg"/>
+            <result column="itemName" property="itemName"/>
+            <result column="itemSpecId" property="itemSpecId"/>
+            <result column="itemSpecName" property="itemSpecName"/>
+            <result column="buyCounts" property="buyCounts"/>
+            <result column="price" property="price"/>
+        </collection>
+    </resultMap>
     <insert id="createOrder" parameterType="com.github.pojo.Order">
         insert into `order`
         (id, user_id, receiver_name, receiver_mobile, receiver_address, total_amount, real_pay_amount, post_amount,
@@ -10,5 +28,31 @@
                 #{payMethod}, #{leftMsg}, #{extand}, #{isComment}, #{isDelete}, #{createdTime}, #{updatedTime})
     </insert>
 
+    <select id="queryUserOrders" parameterType="map" resultMap="myOrdersVO">
+        select od.id as orderId,
+        od.created_time as createdTime,
+        od.pay_method as payMethod,
+        od.real_pay_amount as realPayAmount,
+        od.post_amount as postAmount,
+        os.order_status as orderStatus,
+        oi.item_id as itemId,
+        oi.item_name as itemName,
+        oi.item_img as itemImg,
+        oi.item_spec_id as itemSpecId,
+        oi.item_spec_name as itemSpecName,
+        oi.buy_counts as buyCounts,
+        oi.price as price
+        from `order` od
+        left join order_status os
+        on od.id = os.order_id
+        left join order_item oi
+        on od.id = oi.order_id
+        where od.user_id = #{paramsMap.userId}
+        and od.is_delete = 0
+        <if test="paramsMap.orderStatus != null">
+            and os.order_status = #{paramsMap.orderStatus}
+        </if>
+        order by od.updated_time asc
+    </select>
 
 </mapper>
