@@ -1,6 +1,12 @@
 package com.github.mapper;
 
 import com.github.pojo.Order;
+import com.github.vo.MyOrderVO;
+import com.github.vo.MySubOrderItemVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Dooby Kim
@@ -9,4 +15,6 @@ import com.github.pojo.Order;
  */
 public interface CustomOrderMapper {
     void createOrder(Order order);
+
+    List<MyOrderVO> queryUserOrders(@Param("paramsMap") Map<String, Object> map);
 }

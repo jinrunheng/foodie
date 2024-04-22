@@ -1,9 +1,8 @@
 package com.github.vo;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * @Author Dooby Kim
@@ -11,8 +10,7 @@ import lombok.Setter;
  * @Version 1.0
  * @Desc 用于展示商品搜索列表结果
  */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchItemsVO {

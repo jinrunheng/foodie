@@ -1,15 +1,15 @@
 package com.github.vo;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author Dooby Kim
  * @Date 2024/4/3 上午12:16
  * @Version 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MerchantOrderVO {

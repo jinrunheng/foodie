@@ -1,6 +1,8 @@
 package com.github.vo;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author Dooby Kim
@@ -8,8 +10,7 @@ import lombok.*;
  * @Version 1.0
  * @Desc 后端 -> 前端 VO
  */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShopCartVO {
