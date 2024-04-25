@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -56,5 +53,18 @@ public class MyOrdersController {
         }
         final PagedGridResult pagedGridResult = myOrderService.queryUserOrders(userId, orderStatus, page, pageSize);
         return CustomJSONResult.ok(pagedGridResult);
+    }
+
+    @ApiOperation(value = "模拟-商家发货")
+    @GetMapping("/deliver")
+    public CustomJSONResult deliver(
+            @ApiParam(name = "orderId", value = "订单id")
+            @RequestParam String orderId
+    ) {
+        if (StringUtils.isBlank(orderId)) {
+            return CustomJSONResult.errorMsg("订单 ID 不能为空");
+        }
+        myOrderService.updateDeliverOrderStatus(orderId);
+        return CustomJSONResult.ok();
     }
 }
