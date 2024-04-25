@@ -53,7 +53,6 @@ public class MyOrderServiceImpl implements MyOrderService {
         Example example = new Example(OrderStatus.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("orderId", orderId);
-        criteria.andEqualTo("orderStatus", OrderStatusEnum.WAIT_RECEIVE.type);
 
         orderStatusMapper.updateByExampleSelective(updateOrder, example);
     }
