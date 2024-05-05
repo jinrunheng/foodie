@@ -2,7 +2,6 @@ package com.github.mapper;
 
 import com.github.pojo.Order;
 import com.github.vo.MyOrderVO;
-import com.github.vo.MySubOrderItemVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,4 +16,8 @@ public interface CustomOrderMapper {
     void createOrder(Order order);
 
     List<MyOrderVO> queryUserOrders(@Param("paramsMap") Map<String, Object> map);
+
+    Order queryMyOrder(@Param("paramsMap") Map<String, String> map);
+
+    int deleteOrder(@Param("paramsMap") Map<String, String> map);
 }

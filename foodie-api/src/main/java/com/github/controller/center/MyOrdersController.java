@@ -1,5 +1,6 @@
 package com.github.controller.center;
 
+import com.github.pojo.Order;
 import com.github.service.center.MyOrderService;
 import com.github.utils.CustomJSONResult;
 import com.github.utils.PagedGridResult;
@@ -8,9 +9,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * @Author Dooby Kim
@@ -65,6 +68,57 @@ public class MyOrdersController {
             return CustomJSONResult.errorMsg("订单 ID 不能为空");
         }
         myOrderService.updateDeliverOrderStatus(orderId);
+        return CustomJSONResult.ok();
+    }
+
+    @ApiOperation(value = "用户确认收获")
+    @PostMapping("/confirmReceive")
+    public CustomJSONResult confirmReceive(
+            @ApiParam(name = "orderId", value = "订单id")
+            @RequestParam String orderId,
+            @ApiParam(name = "userId", value = "用户id")
+            @RequestParam String userId
+    ) {
+        final CustomJSONResult checkResult = checkUserOrder(orderId, userId);
+        if (checkResult.getStatus() != HttpStatus.OK.value()) {
+            return checkResult;
+        }
+        final boolean result = myOrderService.updateReceiveOrderStatus(orderId);
+        if (!result) {
+            return CustomJSONResult.errorMsg("订单确认收货失败！");
+        }
+        return CustomJSONResult.ok();
+    }
+
+    @ApiOperation(value = "用户删除订单")
+    @PostMapping("/delete")
+    public CustomJSONResult deleteOrder(
+            @ApiParam(name = "orderId", value = "订单id")
+            @RequestParam String orderId,
+            @ApiParam(name = "userId", value = "用户id")
+            @RequestParam String userId
+    ) {
+        final CustomJSONResult checkResult = checkUserOrder(orderId, userId);
+        if (checkResult.getStatus() != HttpStatus.OK.value()) {
+            return checkResult;
+        }
+        final boolean result = myOrderService.deleteOrder(orderId, userId);
+        if (!result) {
+            return CustomJSONResult.errorMsg("删除订单失败！");
+        }
+        return CustomJSONResult.ok();
+    }
+
+    /**
+     * 验证用户和订单是否有关联，避免非法用户调用
+     *
+     * @return
+     */
+    private CustomJSONResult checkUserOrder(String orderId, String userId) {
+        final Order order = myOrderService.queryMyOrder(orderId, userId);
+        if (Objects.isNull(order)) {
+            return CustomJSONResult.errorMsg("订单不存在");
+        }
         return CustomJSONResult.ok();
     }
 }
