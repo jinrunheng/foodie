@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.github.mapper.CustomOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.github.pojo.Order" >
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+        <result column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
+        <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+        <result column="total_amount" property="totalAmount" jdbcType="INTEGER" />
+        <result column="real_pay_amount" property="realPayAmount" jdbcType="INTEGER" />
+        <result column="post_amount" property="postAmount" jdbcType="INTEGER" />
+        <result column="pay_method" property="payMethod" jdbcType="INTEGER" />
+        <result column="left_msg" property="leftMsg" jdbcType="VARCHAR" />
+        <result column="extand" property="extand" jdbcType="VARCHAR" />
+        <result column="is_comment" property="isComment" jdbcType="INTEGER" />
+        <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
     <resultMap id="myOrdersVO" type="com.github.vo.MyOrderVO">
         <id column="orderId" property="orderId"/>
         <result column="createdTime" property="createdTime"/>
@@ -36,7 +58,8 @@
         od.pay_method as payMethod,
         od.real_pay_amount as realPayAmount,
         od.post_amount as postAmount,
-        os.order_status as orderStatus
+        os.order_status as orderStatus,
+        od.is_comment as isComment
         from `order` od
         left join order_status os
         on od.id = os.order_id
@@ -60,7 +83,7 @@
         where oi.order_id = #{orderId}
     </select>
 
-    <select id="queryMyOrder" parameterType="map" resultType="com.github.pojo.Order">
+    <select id="queryMyOrder" parameterType="map" resultMap="BaseResultMap">
         select *
         from `order` od
         where od.id = #{paramsMap.id}

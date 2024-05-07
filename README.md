@@ -1,5 +1,5 @@
 ## TODO
-finished step1,week4,3-6
+finished step1,week4,4-2
 
 ## 运行前端项目
 
