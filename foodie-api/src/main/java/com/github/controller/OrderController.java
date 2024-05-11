@@ -4,7 +4,6 @@ import com.github.bo.SubmitOrderBO;
 import com.github.enums.OrderStatusEnum;
 import com.github.enums.PayMethodEnum;
 import com.github.service.OrderService;
-import com.github.utils.CookieUtils;
 import com.github.utils.CustomJSONResult;
 import com.github.vo.MerchantOrderVO;
 import com.github.vo.OrderVO;
