@@ -72,6 +72,7 @@ public class MyCommentsController {
         if (Objects.isNull(commentList) || commentList.isEmpty()) {
             return CustomJSONResult.errorMsg("评论内容不能为空");
         }
+        myCommentsService.saveComments(orderId, userId, commentList);
         return CustomJSONResult.ok();
     }
 

@@ -1,5 +1,6 @@
 package com.github.service.center;
 
+import com.github.bo.center.OrderItemsCommentBO;
 import com.github.pojo.OrderItem;
 
 import java.util.List;
@@ -18,4 +19,13 @@ public interface MyCommentsService {
      * @return
      */
     List<OrderItem> queryPendingComments(String orderId);
+
+    /**
+     * 保存用户的评论
+     *
+     * @param orderId
+     * @param userId
+     * @param commentList
+     */
+    void saveComments(String orderId, String userId, List<OrderItemsCommentBO> commentList);
 }

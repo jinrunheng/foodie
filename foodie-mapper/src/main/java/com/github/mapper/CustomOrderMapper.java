@@ -20,4 +20,6 @@ public interface CustomOrderMapper {
     Order queryMyOrder(@Param("paramsMap") Map<String, String> map);
 
     int deleteOrder(@Param("paramsMap") Map<String, String> map);
+
+    void updateOrderIsCommentForYes(@Param("orderId") String orderId);
 }
