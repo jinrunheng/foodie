@@ -1,5 +1,6 @@
 package com.github.controller.center;
 
+import com.github.bo.center.OrderItemsCommentBO;
 import com.github.enums.YesOrNo;
 import com.github.pojo.Order;
 import com.github.pojo.OrderItem;
@@ -10,10 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -55,6 +53,26 @@ public class MyCommentsController {
 
         final List<OrderItem> orderItems = myCommentsService.queryPendingComments(orderId);
         return CustomJSONResult.ok(orderItems);
+    }
+
+    @ApiOperation(value = "保存评论列表")
+    @PostMapping("/saveList")
+    public CustomJSONResult saveList(
+            @ApiParam(name = "orderId", value = "订单id")
+            @RequestParam String orderId,
+            @ApiParam(name = "userId", value = "用户id")
+            @RequestParam String userId,
+            @RequestBody List<OrderItemsCommentBO> commentList
+    ) {
+        final CustomJSONResult checkResult = checkUserOrder(orderId, userId);
+        if (checkResult.getStatus() != HttpStatus.OK.value()) {
+            return checkResult;
+        }
+        // 判断评论内容 List 不能为空
+        if (Objects.isNull(commentList) || commentList.isEmpty()) {
+            return CustomJSONResult.errorMsg("评论内容不能为空");
+        }
+        return CustomJSONResult.ok();
     }
 
     /**
