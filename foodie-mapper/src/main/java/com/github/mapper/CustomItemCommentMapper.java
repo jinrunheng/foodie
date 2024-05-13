@@ -1,5 +1,9 @@
 package com.github.mapper;
 
+import com.github.vo.MyCommentVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,4 +13,6 @@ import java.util.Map;
  */
 public interface CustomItemCommentMapper {
     void saveComments(Map<String, Object> map);
+
+    List<MyCommentVO> queryMyComments(@Param("paramsMap") Map<String, String> paramsMap);
 }

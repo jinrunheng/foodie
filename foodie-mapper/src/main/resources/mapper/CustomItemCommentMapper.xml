@@ -17,6 +17,16 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="myComments" type="com.github.vo.MyCommentVO">
+        <id column="commentId" property="commentId"/>
+        <result column="content" property="content"/>
+        <result column="createdTime" property="createdTime"/>
+        <result column="itemId" property="itemId"/>
+        <result column="itemName" property="itemName"/>
+        <result column="specName" property="specName"/>
+        <result column="itemImg" property="itemImg"/>
+    </resultMap>
+
     <insert id="saveComments" parameterType="map">
         insert into
         item_comment
@@ -37,4 +47,20 @@
             )
         </foreach>
     </insert>
+
+    <select id="queryMyComments" resultMap="myComments" parameterType="map">
+        select ic.id           as commentId,
+               ic.content      as content,
+               ic.created_time as createdTime,
+               ic.item_id      as itemId,
+               ic.item_name    as itemName,
+               ic.spec_name    as specName,
+               ii.url          as itemImg
+        from item_comment ic
+                 left join item_img ii
+                           on ic.item_id = ii.item_id
+        where ic.user_id = #{paramsMap.userId}
+          and ii.is_main = 1
+        order by ic.created_time desc
+    </select>
 </mapper>
