@@ -7,9 +7,11 @@ import com.github.pojo.OrderItem;
 import com.github.service.center.MyCommentsService;
 import com.github.service.center.MyOrderService;
 import com.github.utils.CustomJSONResult;
+import com.github.utils.PagedGridResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,6 +76,29 @@ public class MyCommentsController {
         }
         myCommentsService.saveComments(orderId, userId, commentList);
         return CustomJSONResult.ok();
+    }
+
+    @ApiOperation(value = "查询我的评价")
+    @PostMapping("/query")
+    public CustomJSONResult query(
+            @ApiParam(name = "userId", value = "用户id")
+            @RequestParam String userId,
+            @ApiParam(name = "page", value = "第几页")
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize", value = "每页几条数据")
+            @RequestParam Integer pageSize
+    ) {
+        if (StringUtils.isBlank(userId)) {
+            return CustomJSONResult.errorMsg("用户 ID 不能为空");
+        }
+        if (page == null) {
+            page = 1;
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
+        final PagedGridResult pagedGridResult = myCommentsService.queryMyComments(userId, page, pageSize);
+        return CustomJSONResult.ok(pagedGridResult);
     }
 
     /**

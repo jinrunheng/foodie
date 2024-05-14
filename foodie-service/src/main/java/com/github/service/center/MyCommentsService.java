@@ -2,6 +2,7 @@ package com.github.service.center;
 
 import com.github.bo.center.OrderItemsCommentBO;
 import com.github.pojo.OrderItem;
+import com.github.utils.PagedGridResult;
 
 import java.util.List;
 
@@ -28,4 +29,14 @@ public interface MyCommentsService {
      * @param commentList
      */
     void saveComments(String orderId, String userId, List<OrderItemsCommentBO> commentList);
+
+    /**
+     * 查询我的评价分页
+     *
+     * @param userId
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    PagedGridResult queryMyComments(String userId, Integer page, Integer pageSize);
 }

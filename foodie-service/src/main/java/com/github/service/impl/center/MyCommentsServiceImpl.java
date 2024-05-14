@@ -6,9 +6,13 @@ import com.github.mapper.CustomItemCommentMapper;
 import com.github.mapper.CustomOrderMapper;
 import com.github.mapper.OrderItemMapper;
 import com.github.mapper.OrderStatusMapper;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pojo.OrderItem;
 import com.github.pojo.OrderStatus;
 import com.github.service.center.MyCommentsService;
+import com.github.utils.PagedGridResult;
+import com.github.vo.MyCommentVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,5 +68,14 @@ public class MyCommentsServiceImpl implements MyCommentsService {
         orderStatus.setOrderId(orderId);
         orderStatus.setCommentTime(new Date());
         orderStatusMapper.updateByPrimaryKeySelective(orderStatus);
+    }
+
+    @Override
+    public PagedGridResult queryMyComments(String userId, Integer page, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        PageHelper.startPage(page, pageSize);
+        final List<MyCommentVO> myCommentVOS = customItemCommentMapper.queryMyComments(map);
+        return PagedGridResult.setPagedGrid(myCommentVOS, page);
     }
 }
