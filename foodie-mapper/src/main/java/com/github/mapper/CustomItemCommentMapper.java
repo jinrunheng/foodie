@@ -14,5 +14,5 @@ import java.util.Map;
 public interface CustomItemCommentMapper {
     void saveComments(Map<String, Object> map);
 
-    List<MyCommentVO> queryMyComments(@Param("paramsMap") Map<String, String> paramsMap);
+    List<MyCommentVO> queryMyComments(@Param("paramsMap") Map<String, Object> paramsMap);
 }
