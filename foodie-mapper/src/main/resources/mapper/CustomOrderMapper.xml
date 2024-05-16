@@ -105,4 +105,17 @@
         set od.is_comment = 1
         where od.id = #{orderId}
     </update>
+
+    <select id="getMyOrderStatusCount" parameterType="map" resultType="int">
+        select count(1)
+        from `order` o
+        left join
+        order_status os
+        on o.id = os.order_id
+        where o.user_id = #{paramsMap.userId}
+        and os.order_status = #{paramsMap.orderStatus}
+        <if test="paramsMap.isComment != null">
+            and o.is_comment = #{paramsMap.isComment}
+        </if>
+    </select>
 </mapper>

@@ -22,4 +22,6 @@ public interface CustomOrderMapper {
     int deleteOrder(@Param("paramsMap") Map<String, String> map);
 
     void updateOrderIsCommentForYes(@Param("orderId") String orderId);
+
+    int getMyOrderStatusCount(@Param("paramsMap") Map<String, Object> map);
 }
