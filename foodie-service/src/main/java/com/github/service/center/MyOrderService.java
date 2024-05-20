@@ -2,6 +2,7 @@ package com.github.service.center;
 
 import com.github.pojo.Order;
 import com.github.utils.PagedGridResult;
+import com.github.vo.OrderStatusCountsVO;
 
 /**
  * @Author Dooby Kim
@@ -53,4 +54,11 @@ public interface MyOrderService {
      * @return
      */
     boolean deleteOrder(String orderId, String userId);
+
+    /**
+     * 查询用户订单数
+     *
+     * @param userId 用户 ID
+     */
+    OrderStatusCountsVO getOrderStatusCounts(String userId);
 }
