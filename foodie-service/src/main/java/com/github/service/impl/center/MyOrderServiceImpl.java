@@ -1,6 +1,7 @@
 package com.github.service.impl.center;
 
 import com.github.enums.OrderStatusEnum;
+import com.github.enums.YesOrNo;
 import com.github.mapper.CustomOrderMapper;
 import com.github.mapper.OrderMapper;
 import com.github.mapper.OrderStatusMapper;
@@ -10,6 +11,7 @@ import com.github.pojo.OrderStatus;
 import com.github.service.center.MyOrderService;
 import com.github.utils.PagedGridResult;
 import com.github.vo.MyOrderVO;
+import com.github.vo.OrderStatusCountsVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,5 +96,26 @@ public class MyOrderServiceImpl implements MyOrderService {
         map.put("userId", userId);
         final int result = customOrderMapper.deleteOrder(map);
         return result == 1;
+    }
+
+    @Override
+    public OrderStatusCountsVO getOrderStatusCounts(String userId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("orderStatus", OrderStatusEnum.WAIT_PAY);
+        final int waitPayCounts = customOrderMapper.getMyOrderStatusCount(map);
+        map.put("orderStatus", OrderStatusEnum.WAIT_DELIVER);
+        final int waitDeliverCounts = customOrderMapper.getMyOrderStatusCount(map);
+        map.put("orderStatus", OrderStatusEnum.WAIT_RECEIVE);
+        final int waitReceiveCounts = customOrderMapper.getMyOrderStatusCount(map);
+        map.put("orderStatus", OrderStatusEnum.SUCCESS.type);
+        map.put("isComment", YesOrNo.NO.type);
+        final int waitCommentCounts = customOrderMapper.getMyOrderStatusCount(map);
+        final OrderStatusCountsVO orderStatusCountsVO = new OrderStatusCountsVO()
+                .setWaitPayCounts(waitPayCounts)
+                .setWaitDeliverCounts(waitDeliverCounts)
+                .setWaitReceiveCounts(waitReceiveCounts)
+                .setWaitCommentCounts(waitCommentCounts);
+        return orderStatusCountsVO;
     }
 }
