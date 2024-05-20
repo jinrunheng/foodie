@@ -102,11 +102,11 @@ public class MyOrderServiceImpl implements MyOrderService {
     public OrderStatusCountsVO getOrderStatusCounts(String userId) {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("orderStatus", OrderStatusEnum.WAIT_PAY);
+        map.put("orderStatus", OrderStatusEnum.WAIT_PAY.type);
         final int waitPayCounts = customOrderMapper.getMyOrderStatusCount(map);
-        map.put("orderStatus", OrderStatusEnum.WAIT_DELIVER);
+        map.put("orderStatus", OrderStatusEnum.WAIT_DELIVER.type);
         final int waitDeliverCounts = customOrderMapper.getMyOrderStatusCount(map);
-        map.put("orderStatus", OrderStatusEnum.WAIT_RECEIVE);
+        map.put("orderStatus", OrderStatusEnum.WAIT_RECEIVE.type);
         final int waitReceiveCounts = customOrderMapper.getMyOrderStatusCount(map);
         map.put("orderStatus", OrderStatusEnum.SUCCESS.type);
         map.put("isComment", YesOrNo.NO.type);

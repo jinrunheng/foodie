@@ -4,6 +4,7 @@ import com.github.pojo.Order;
 import com.github.service.center.MyOrderService;
 import com.github.utils.CustomJSONResult;
 import com.github.utils.PagedGridResult;
+import com.github.vo.OrderStatusCountsVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -107,6 +108,19 @@ public class MyOrdersController {
             return CustomJSONResult.errorMsg("删除订单失败！");
         }
         return CustomJSONResult.ok();
+    }
+
+    @ApiOperation(value = "获得订单状态数状态概况")
+    @PostMapping("/statusCounts")
+    public CustomJSONResult statusCounts(
+            @ApiParam(name = "userId", value = "用户id")
+            @RequestParam String userId
+    ) {
+        if (StringUtils.isBlank(userId)) {
+            return CustomJSONResult.errorMsg("用户 ID 不能为空！");
+        }
+        final OrderStatusCountsVO orderStatusCounts = myOrderService.getOrderStatusCounts(userId);
+        return CustomJSONResult.ok(orderStatusCounts);
     }
 
     /**
