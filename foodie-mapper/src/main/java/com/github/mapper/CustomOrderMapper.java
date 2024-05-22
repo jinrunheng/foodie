@@ -1,6 +1,7 @@
 package com.github.mapper;
 
 import com.github.pojo.Order;
+import com.github.pojo.OrderStatus;
 import com.github.vo.MyOrderVO;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,4 +25,6 @@ public interface CustomOrderMapper {
     void updateOrderIsCommentForYes(@Param("orderId") String orderId);
 
     int getMyOrderStatusCount(@Param("paramsMap") Map<String, Object> map);
+
+    List<OrderStatus> getMyOrderTrend(@Param("paramsMap") Map<String, Object> map);
 }
