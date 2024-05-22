@@ -1,5 +1,6 @@
 package com.github.service.impl.center;
 
+import cn.hutool.core.util.PageUtil;
 import com.github.enums.OrderStatusEnum;
 import com.github.enums.YesOrNo;
 import com.github.mapper.CustomOrderMapper;
@@ -117,5 +118,14 @@ public class MyOrderServiceImpl implements MyOrderService {
                 .setWaitReceiveCounts(waitReceiveCounts)
                 .setWaitCommentCounts(waitCommentCounts);
         return orderStatusCountsVO;
+    }
+
+    @Override
+    public PagedGridResult getOrdersTrend(String userId, Integer page, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        PageHelper.startPage(page, pageSize);
+        final List<OrderStatus> myOrderTrend = customOrderMapper.getMyOrderTrend(map);
+        return PagedGridResult.setPagedGrid(myOrderTrend, page);
     }
 }

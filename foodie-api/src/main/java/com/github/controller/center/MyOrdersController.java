@@ -123,6 +123,30 @@ public class MyOrdersController {
         return CustomJSONResult.ok(orderStatusCounts);
     }
 
+    @ApiOperation(value = "查询订单动向")
+    @PostMapping("/trend")
+    public CustomJSONResult trend(
+            @ApiParam(name = "userId", value = "用户id")
+            @RequestParam String userId,
+            @ApiParam(name = "page", value = "第几页")
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize", value = "每页几条数据")
+            @RequestParam Integer pageSize
+    ) {
+        if (StringUtils.isBlank(userId)) {
+            return CustomJSONResult.errorMsg("用户 ID 不能为空!");
+        }
+        if (page == null) {
+            page = DEFAULT_PAGE;
+        }
+        if (pageSize == null) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+
+        final PagedGridResult ordersTrend = myOrderService.getOrdersTrend(userId, page, pageSize);
+        return CustomJSONResult.ok(ordersTrend);
+    }
+
     /**
      * 验证用户和订单是否有关联，避免非法用户调用
      *
